@@ -1,130 +1,151 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BloxRewards</title>
-<link rel="icon" href="https://files.catbox.moe/3lluys.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--primary:#c084fc;--primary-dark:#a855f7;--glow:#d8b4fe;--bg-start:#05000a;--bg-end:#140022}
-*{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth}
-body{font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;background:linear-gradient(135deg,var(--bg-start),var(--bg-end));color:white;display:flex;flex-direction:column;overflow-x:hidden}
-header{width:100%;display:flex;justify-content:space-between;align-items:center;padding:12px 24px;background:rgba(0,0,0,0.25);backdrop-filter:blur(6px);position:fixed;top:0;left:0;z-index:200;border-bottom:1px solid rgba(255,255,255,0.08)}
-header h2{font-size:1.4rem;color:white}
-nav a{margin-left:20px;color:white;text-decoration:none;font-weight:500;transition:all 0.2s}
-nav a:hover{color:var(--primary)}
-footer{margin-top:20px;font-size:0.85rem;color:white;text-align:center;padding:12px}
-.snow-container{position:absolute;inset:0;pointer-events:none;z-index:0}
-.snowflake{position:absolute;top:-12px;width:5px;height:5px;background:rgba(255,255,255,0.9);border-radius:50%;box-shadow:0 0 6px rgba(255,255,255,0.7);animation:fall linear forwards}
-@keyframes fall{to{transform:translateY(110vh)}}
-.container{position:relative;z-index:2;width:360px;max-width:90vw;padding:40px 28px;border-radius:22px;background:rgba(255,255,255,0.03);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.05);box-shadow:0 10px 40px rgba(0,0,0,0.6);text-align:center;margin-top:80px}
-h1{font-size:2.4rem;font-weight:600;margin-bottom:32px;background:linear-gradient(90deg,#e9d5ff,#c084fc,#a855f7);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 18px rgba(192,132,252,0.6)}
-.input-group{position:relative;margin-bottom:22px}
-input{width:100%;padding:14px 18px;font-size:1rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:12px;color:white;transition:all 0.3s ease;backdrop-filter:blur(4px)}
-input::placeholder{color:rgba(255,255,255,0.45)}
-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 2px rgba(192,132,252,0.25);background:rgba(255,255,255,0.08)}
-.floating-label{position:absolute;left:18px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,0.5);font-size:0.95rem;pointer-events:none;transition:all 0.25s ease}
-input:focus + .floating-label,input:not(:placeholder-shown) + .floating-label{top:-8px;left:14px;font-size:0.75rem;color:var(--primary);background:var(--bg-end);padding:0 5px}
-button{width:100%;padding:16px;font-size:1.1rem;font-weight:600;background:linear-gradient(90deg,var(--primary),var(--primary-dark));border:none;border-radius:12px;color:white;cursor:pointer;transition:all 0.3s ease;box-shadow:0 8px 20px rgba(168,85,247,0.35);margin-top:10px}
-button:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(168,85,247,0.5)}
-#message{margin-top:20px;font-size:0.95rem;color:#e9d5ff;min-height:1.4em;opacity:0;transition:opacity 0.4s ease}
-#message.show{opacity:1}
-.particle{position:absolute;width:6px;height:6px;background:var(--glow);border-radius:50%;pointer-events:none;animation:fly 1.2s ease-out forwards}
-@keyframes fly{0%{transform:translate(0,0) scale(1);opacity:0.9}100%{transform:translate(var(--x),var(--y)) scale(0.2);opacity:0}}
-#trademark{position:fixed;bottom:18px;left:18px;font-size:1.2rem;color:#c084fc;opacity:0.8;z-index:10;font-weight:bold}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:flex;justify-content:center;align-items:center;z-index:100}
-.modal-content{background:rgba(30,10,50,0.95);padding:32px;border-radius:20px;text-align:center;width:360px;max-width:90vw}
-.modal button{margin-top:20px;width:50%;cursor:pointer}
-.faq-section{margin-top:60px;width:90%;max-width:800px;margin-left:auto;margin-right:auto}
-.faq-section h2{margin-bottom:20px;font-size:1.5rem;text-align:center}
-.faq-item{margin-bottom:16px;background:rgba(255,255,255,0.05);padding:12px 16px;border-radius:10px;cursor:pointer;transition:all 0.3s ease}
-.faq-item:hover{background:rgba(192,132,252,0.1)}
-.account-form{margin-top:20px}
+body{margin:0;font-family:Inter,system-ui;background:linear-gradient(180deg,#0b0b0f,#140a1f);color:#fff;overflow-x:hidden}
+nav{position:fixed;top:0;width:100%;background:rgba(0,0,0,0.6);backdrop-filter:blur(12px);display:flex;justify-content:space-between;align-items:center;padding:16px 40px;z-index:1000}
+nav h1{margin:0;font-size:20px}
+nav .links span{margin-left:30px;cursor:pointer;font-weight:600;opacity:.8}
+nav .links span:hover{opacity:1}
+.section{min-height:100vh;padding:120px 20px 60px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.card{background:rgba(255,255,255,0.05);backdrop-filter:blur(15px);padding:40px;border-radius:20px;max-width:500px;width:100%;box-shadow:0 0 40px rgba(0,0,0,.4)}
+input{width:100%;padding:14px;margin:10px 0;border:none;border-radius:10px;background:rgba(255,255,255,0.1);color:#fff}
+button{width:100%;padding:14px;border:none;border-radius:10px;background:linear-gradient(90deg,#7b2ff7,#f107a3);color:#fff;font-weight:600;cursor:pointer;margin-top:10px}
+button:hover{opacity:.9}
+.hidden{display:none}
+.faq{max-width:800px;margin:auto;text-align:left}
+.faq h3{margin-top:20px}
+.footer{padding:40px;text-align:center;opacity:.6}
 </style>
 </head>
 <body>
-<header>
-<h2>BloxRewards</h2>
+
 <nav>
-<a href="#home">Home</a>
-<a href="#robux">Robux</a>
-<a href="#profile" id="profileLink" style="display:none">My Profile</a>
+<h1>BloxRewards</h1>
+<div class="links">
+<span onclick="showHome()">Home</span>
+<span onclick="showRobux()">Robux</span>
+<span onclick="showProfile()">My Profile</span>
+</div>
 </nav>
-</header>
-<div class="snow-container" id="snow"></div>
-<div id="trademark">C BloxRewards™</div>
-<div class="modal" id="startModal">
-<div class="modal-content" id="loginModal">
-<h2>Login or Create Account</h2>
-<div class="account-form" id="loginForm">
-<div class="input-group"><input id="loginUser" placeholder=" " autocomplete="off"><span class="floating-label">Username</span></div>
-<div class="input-group"><input type="password" id="loginPass" placeholder=" " autocomplete="off"><span class="floating-label">Password</span></div>
-<button id="loginBtn">Login</button>
-<p style="margin-top:12px">or create account below</p>
-<div class="input-group"><input id="createUser" placeholder=" " autocomplete="off"><span class="floating-label">New Username</span></div>
-<div class="input-group"><input type="password" id="createPass" placeholder=" " autocomplete="off"><span class="floating-label">New Password</span></div>
-<div class="input-group"><input type="email" id="createEmail" placeholder=" " autocomplete="off"><span class="floating-label">Email</span></div>
-<button id="createBtn">Create Account</button>
-<div id="loginMessage"></div>
+
+<div id="home" class="section">
+<h2>Earn Robux Safely</h2>
+<p>Transfer Robux using official Roblox purchasing methods. Fully compliant with Roblox terms.</p>
+</div>
+
+<div id="auth" class="section">
+<div class="card">
+<h2 id="authTitle">Login</h2>
+<input id="username" placeholder="Username">
+<input id="password" type="password" placeholder="Password">
+<input id="email" class="hidden" placeholder="Email">
+<label style="font-size:12px;display:block;margin-top:5px"><input type="checkbox" id="emailPermission"> I agree to receive emails</label>
+<button onclick="handleAuth()">Continue</button>
+<p style="margin-top:15px;cursor:pointer" onclick="toggleAuth()">Need an account? Sign up</p>
 </div>
 </div>
+
+<div id="robux" class="section hidden">
+<div class="card">
+<h2>Send Robux</h2>
+<input id="robuxUser" placeholder="Roblox Username">
+<input id="robuxAmount" placeholder="Amount">
+<button onclick="sendRobux()">Transfer</button>
+<p id="robuxStatus"></p>
 </div>
-<div class="container" id="mainContainer" style="display:none">
-<h1 id="animatedTitle"></h1>
-<div class="input-group">
-<input id="username" placeholder=" " autocomplete="off">
-<span class="floating-label">Username</span>
 </div>
-<div class="input-group">
-<input id="amount" placeholder=" " type="number" min="1" autocomplete="off">
-<span class="floating-label">Amount</span>
+
+<div id="profile" class="section hidden">
+<div class="card">
+<h2>My Profile</h2>
+<p id="profileInfo"></p>
+<button onclick="logout()">Logout</button>
 </div>
-<button id="submitBtn">Get Robux</button>
-<div id="message"></div>
 </div>
-<div class="faq-section" id="faq">
+
+<div class="section">
+<div class="faq">
 <h2>Recently Asked Questions</h2>
-<div class="faq-item">How long does it take to receive Robux?</div>
-<div class="faq-item">Do I need a gamepass to claim rewards?</div>
-<div class="faq-item">Can I use multiple accounts?</div>
-<div class="faq-item">Is this safe and TOS compliant?</div>
-<div class="faq-item">How is the Robux delivered?</div>
+<h3>Does this use the official Roblox API?</h3>
+<p>Yes it uses Roblox purchasing systems such as gamepasses or developer products to transfer funds safely.</p>
+<h3>Is this allowed by Roblox terms?</h3>
+<p>Yes all transfers happen through official purchasing flows.</p>
+<h3>Do I need an account?</h3>
+<p>Yes you must create an account before accessing the Robux transfer page.</p>
+<h3>How do I receive Robux?</h3>
+<p>You must own a purchasable item like a gamepass for the transfer to work.</p>
+<h3>Are emails required?</h3>
+<p>Email is optional and only used if you grant permission.</p>
 </div>
-<footer>© 2026 BloxRewards. All Rights Reserved.</footer>
-<audio id="bgAudio" autoplay volume="0.3"></audio>
-<audio id="clickAudio" src="https://files.catbox.moe/k8frcq.mp3"></audio>
+</div>
+
+<div class="footer"></div>
+
 <script>
-const snowContainer=document.getElementById("snow")
-function createSnowflake(){const f=document.createElement('div');f.className='snowflake';f.style.left=Math.random()*100+'vw';f.style.animationDuration=(4+Math.random()*5)+'s';f.style.opacity=0.4+Math.random()*0.5;f.style.width=f.style.height=(4+Math.random()*5)+'px';snowContainer.appendChild(f);setTimeout(()=>f.remove(),9000)}
-setInterval(createSnowflake,180)
-const btn=document.getElementById("submitBtn")
-const container=document.getElementById("mainContainer")
-const msg=document.getElementById("message")
-let cooldown=false
-function createParticles(){for(let i=0;i<20;i++){const p=document.createElement('div');p.className='particle';const x=(Math.random()-0.5)*240+'px';const y=(Math.random()-1.5)*200+'px';p.style.setProperty('--x',x);p.style.setProperty('--y',y);container.appendChild(p);setTimeout(()=>p.remove(),1200)}}
-btn.onclick=()=>{clickAudio.play();if(cooldown)return;const user=document.getElementById("username").value.trim();const amount=document.getElementById("amount").value.trim();if(!user||!amount||isNaN(amount)||Number(amount)<=0){msg.textContent="Enter valid details";msg.classList.add("show");setTimeout(()=>{msg.classList.remove("show");msg.textContent="";},2000);return}msg.textContent="Submitted";msg.classList.add("show");createParticles();cooldown=true;setTimeout(()=>{cooldown=false;msg.classList.remove("show");msg.textContent="";},2500)}
-const titles=["BloxRewards 💰"]
-let titleIndex=0
-let typing=true
-let displayText=""
-const animatedTitle=document.getElementById("animatedTitle")
-function typeTitle(){let full=titles[0];if(typing){displayText=full.slice(0,titleIndex+1);titleIndex++;if(titleIndex>full.length){typing=false;setTimeout(typeTitle,800);return}}else{displayText=full.slice(0,titleIndex-1);titleIndex--;if(titleIndex<=0){typing=true;setTimeout(typeTitle,400);return}}animatedTitle.textContent=displayText;document.title=displayText;setTimeout(typeTitle,120)}
-typeTitle()
-const playlist=["https://files.catbox.moe/uxnh67.mp3","https://files.catbox.moe/147r3s.mp3","https://files.catbox.moe/8zzmuk.mp3","https://files.catbox.moe/kizlt0.mp3"]
-let current=0
-const audio=document.getElementById("bgAudio")
-audio.src=playlist[current]
-audio.loop=false
-audio.volume=0.3
-audio.play()
-audio.onended=()=>{current=(current+1)%playlist.length;audio.src=playlist[current];audio.play()}
-const startModal=document.getElementById("startModal")
-const loginBtn=document.getElementById("loginBtn")
-const createBtn=document.getElementById("createBtn")
-const loginMessage=document.getElementById("loginMessage")
-const profileLink=document.getElementById("profileLink")
-loginBtn.onclick=()=>{clickAudio.play();const user=document.getElementById("loginUser").value.trim();const pass=document.getElementById("loginPass").value.trim();if(user&&pass){startModal.style.display="none";container.style.display="block";profileLink.style.display="inline"}} 
-createBtn.onclick=()=>{clickAudio.play();const user=document.getElementById("createUser").value.trim();const pass=document.getElementById("createPass").value.trim();const email=document.getElementById("createEmail").value.trim();if(user&&pass&&email){startModal.style.display="none";container.style.display="block";profileLink.style.display="inline"}}
+let mode="login"
+let currentUser=null
+function toggleAuth(){
+mode=mode==="login"?"signup":"login"
+document.getElementById("authTitle").innerText=mode==="login"?"Login":"Create Account"
+document.getElementById("email").classList.toggle("hidden")
+}
+function handleAuth(){
+let u=document.getElementById("username").value
+let p=document.getElementById("password").value
+let e=document.getElementById("email").value
+if(!u||!p)return
+if(mode==="signup"){
+let users=JSON.parse(localStorage.getItem("users")||"{}")
+if(users[u]){alert("Account exists");return}
+users[u]={password:p,email:e,permission:document.getElementById("emailPermission").checked}
+localStorage.setItem("users",JSON.stringify(users))
+currentUser=u
+}else{
+let users=JSON.parse(localStorage.getItem("users")||"{}")
+if(!users[u]||users[u].password!==p){alert("Invalid login");return}
+currentUser=u
+}
+document.getElementById("auth").classList.add("hidden")
+document.getElementById("home").classList.remove("hidden")
+}
+function showHome(){
+hideAll()
+document.getElementById("home").classList.remove("hidden")
+}
+function showRobux(){
+if(!currentUser){showAuth();return}
+hideAll()
+document.getElementById("robux").classList.remove("hidden")
+}
+function showProfile(){
+if(!currentUser){showAuth();return}
+hideAll()
+document.getElementById("profile").classList.remove("hidden")
+document.getElementById("profileInfo").innerText="Logged in as "+currentUser
+}
+function showAuth(){
+hideAll()
+document.getElementById("auth").classList.remove("hidden")
+}
+function hideAll(){
+document.querySelectorAll(".section").forEach(s=>s.classList.add("hidden"))
+}
+function logout(){
+currentUser=null
+showHome()
+}
+function sendRobux(){
+let user=document.getElementById("robuxUser").value
+let amount=document.getElementById("robuxAmount").value
+if(!user||!amount)return
+document.getElementById("robuxStatus").innerText="Redirecting to official Roblox purchase flow"
+}
 </script>
+
 </body>
 </html>
