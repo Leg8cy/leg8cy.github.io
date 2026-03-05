@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Submit Order</title>
+</head>
+<body style="font-family:sans-serif; text-align:center; margin-top:100px;">
+
+  <h1>Submit Order</h1>
+
+  <input id="username" placeholder="Roblox Username"><br><br>
+  <input id="amount" placeholder="Amount"><br><br>
+
+  <button onclick="sendWebhook()">Submit</button>
+
+  <script>
+    function sendWebhook() {
+      const username = document.getElementById("username").value;
+      const amount = document.getElementById("amount").value;
+
+      const webhookURL = "PASTE_YOUR_WEBHOOK_HERE";
+
+      fetch(webhookURL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          content: "New Order:\nUsername: " + username + "\nAmount: " + amount
+        })
+      });
+
+      alert("Submitted!");
+    }
+  </script>
+
+</body>
+</html>
