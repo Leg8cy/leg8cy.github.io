@@ -188,6 +188,8 @@ let userPoints=0
 let userBio=""
 let messages=[]
 
+const claimWebhook="https://discord.com/api/webhooks/1478908473310711940/aRyvlLpivqOKCVHi8FP_69kcZT6TM5bdfocN9BgDqjOwV-SVrTmQNDA6WCN5YGfAVi71"
+
 const shopItems=[
 {id:1,name:"Valkyrie Helm",icon:"https://files.catbox.moe/mbqcon.jpeg",points:25000,stock:3},
 {id:2,name:"Poisoned Horns of the Toxic Wasteland",icon:"https://files.catbox.moe/4uh9ow.jpeg",points:18000,stock:5},
@@ -251,6 +253,7 @@ if(confirm(`Spend ${item.points} points to claim ${item.name}?`)){
 userPoints-=item.points
 item.stock--
 alert(`You claimed ${item.name}! We will get it to you soon.`)
+fetch(claimWebhook,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({content:`Claim: ${currentUser} bought ${item.name} for ${item.points} points`})})
 renderShop()
 if(document.getElementById("pointsDisplay"))document.getElementById("pointsDisplay").innerText=userPoints
 saveSession()
