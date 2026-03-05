@@ -6,19 +6,21 @@
 <title>BloxRewards</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-body{margin:0;font-family:Inter,system-ui;background:linear-gradient(180deg,#0b0b0f,#140a1f);color:#fff;overflow-x:hidden}
-nav{position:fixed;top:0;width:100%;background:rgba(0,0,0,0.6);backdrop-filter:blur(12px);display:flex;justify-content:space-between;align-items:center;padding:16px 40px;z-index:1000}
+body{margin:0;font-family:Inter,system-ui;background:linear-gradient(180deg,#0a0a0f,#140a1f);color:#fff}
+nav{position:fixed;top:0;width:100%;background:rgba(0,0,0,.6);backdrop-filter:blur(12px);display:flex;justify-content:space-between;align-items:center;padding:16px 40px;z-index:1000}
 nav h1{margin:0;font-size:20px}
 nav .links span{margin-left:30px;cursor:pointer;font-weight:600;opacity:.8}
 nav .links span:hover{opacity:1}
-.section{min-height:100vh;padding:120px 20px 60px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-.card{background:rgba(255,255,255,0.05);backdrop-filter:blur(15px);padding:40px;border-radius:20px;max-width:500px;width:100%;box-shadow:0 0 40px rgba(0,0,0,.4)}
-input{width:100%;padding:14px;margin:10px 0;border:none;border-radius:10px;background:rgba(255,255,255,0.1);color:#fff}
+.page{display:none;min-height:100vh;padding:120px 20px 60px 20px;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.active{display:flex}
+.card{background:rgba(255,255,255,.05);backdrop-filter:blur(15px);padding:40px;border-radius:20px;max-width:500px;width:100%;box-shadow:0 0 40px rgba(0,0,0,.4)}
+input{width:100%;padding:14px;margin:10px 0;border:none;border-radius:10px;background:rgba(255,255,255,.1);color:#fff}
 button{width:100%;padding:14px;border:none;border-radius:10px;background:linear-gradient(90deg,#7b2ff7,#f107a3);color:#fff;font-weight:600;cursor:pointer;margin-top:10px}
 button:hover{opacity:.9}
-.hidden{display:none}
 .faq{max-width:800px;margin:auto;text-align:left}
-.faq h3{margin-top:20px}
+.faq-item{margin-top:20px;background:rgba(255,255,255,.05);padding:20px;border-radius:14px}
+.faq-item h3{margin:0;cursor:pointer}
+.faq-item p{margin-top:10px;display:none;opacity:.85}
 .footer{padding:40px;text-align:center;opacity:.6}
 </style>
 </head>
@@ -27,123 +29,136 @@ button:hover{opacity:.9}
 <nav>
 <h1>BloxRewards</h1>
 <div class="links">
-<span onclick="showHome()">Home</span>
-<span onclick="showRobux()">Robux</span>
-<span onclick="showProfile()">My Profile</span>
+<span onclick="navigate('home')">Home</span>
+<span onclick="navigate('robux')">Robux</span>
+<span onclick="navigate('profile')">My Profile</span>
+<span onclick="navigate('auth')">Login</span>
 </div>
 </nav>
 
-<div id="home" class="section">
-<h2>Earn Robux Safely</h2>
-<p>Transfer Robux using official Roblox purchasing methods. Fully compliant with Roblox terms.</p>
-</div>
+<div id="home" class="page active">
+<h2>Earn Robux Securely</h2>
+<p>All transfers use official Roblox purchasing systems and comply with platform policies.</p>
 
-<div id="auth" class="section">
-<div class="card">
-<h2 id="authTitle">Login</h2>
-<input id="username" placeholder="Username">
-<input id="password" type="password" placeholder="Password">
-<input id="email" class="hidden" placeholder="Email">
-<label style="font-size:12px;display:block;margin-top:5px"><input type="checkbox" id="emailPermission"> I agree to receive emails</label>
-<button onclick="handleAuth()">Continue</button>
-<p style="margin-top:15px;cursor:pointer" onclick="toggleAuth()">Need an account? Sign up</p>
-</div>
-</div>
-
-<div id="robux" class="section hidden">
-<div class="card">
-<h2>Send Robux</h2>
-<input id="robuxUser" placeholder="Roblox Username">
-<input id="robuxAmount" placeholder="Amount">
-<button onclick="sendRobux()">Transfer</button>
-<p id="robuxStatus"></p>
-</div>
-</div>
-
-<div id="profile" class="section hidden">
-<div class="card">
-<h2>My Profile</h2>
-<p id="profileInfo"></p>
-<button onclick="logout()">Logout</button>
-</div>
-</div>
-
-<div class="section">
 <div class="faq">
 <h2>Recently Asked Questions</h2>
-<h3>Does this use the official Roblox API?</h3>
-<p>Yes it uses Roblox purchasing systems such as gamepasses or developer products to transfer funds safely.</p>
-<h3>Is this allowed by Roblox terms?</h3>
-<p>Yes all transfers happen through official purchasing flows.</p>
-<h3>Do I need an account?</h3>
-<p>Yes you must create an account before accessing the Robux transfer page.</p>
-<h3>How do I receive Robux?</h3>
-<p>You must own a purchasable item like a gamepass for the transfer to work.</p>
-<h3>Are emails required?</h3>
-<p>Email is optional and only used if you grant permission.</p>
+
+<div class="faq-item">
+<h3 onclick="toggleFaq(this)">Does this use official Roblox systems?</h3>
+<p>Yes. All Robux transfers are completed through official Roblox purchasing systems such as gamepasses or developer products. No third party exploits or bypass methods are used.</p>
+</div>
+
+<div class="faq-item">
+<h3 onclick="toggleFaq(this)">Is this allowed under Roblox rules?</h3>
+<p>Yes. The process follows Roblox Terms of Service by using approved marketplace transactions. Funds move through legitimate purchase flows.</p>
+</div>
+
+<div class="faq-item">
+<h3 onclick="toggleFaq(this)">Why do I need an account here?</h3>
+<p>You must create an account to access the Robux transfer section. This keeps user actions separate and ensures only registered users can initiate transfers.</p>
+</div>
+
+<div class="faq-item">
+<h3 onclick="toggleFaq(this)">How do I actually receive the Robux?</h3>
+<p>You need a purchasable asset on Roblox such as a gamepass or developer product. Once someone purchases it, the Robux is transferred through Roblox automatically.</p>
+</div>
+
+<div class="faq-item">
+<h3 onclick="toggleFaq(this)">Is email required?</h3>
+<p>Email is optional. If you choose to provide it and grant permission, it can be used for updates or notifications. It is not required to use the core features.</p>
+</div>
+
+</div>
+</div>
+
+<div id="auth" class="page">
+<div class="card">
+<h2 id="authTitle">Login</h2>
+<input id="authUser" placeholder="Username">
+<input id="authPass" type="password" placeholder="Password">
+<input id="authEmail" placeholder="Email" style="display:none">
+<label style="font-size:12px;display:block;margin-top:5px"><input type="checkbox" id="emailPermission"> I agree to receive emails</label>
+<button onclick="submitAuth()">Continue</button>
+<p style="margin-top:15px;cursor:pointer" onclick="toggleMode()">Switch to Sign Up</p>
+</div>
+</div>
+
+<div id="robux" class="page">
+<div class="card">
+<h2>Robux Transfer</h2>
+<input id="robuxUser" placeholder="Roblox Username">
+<input id="robuxAmount" placeholder="Amount">
+<button onclick="processRobux()">Proceed</button>
+<p id="robuxMessage"></p>
+</div>
+</div>
+
+<div id="profile" class="page">
+<div class="card">
+<h2>Account Profile</h2>
+<p id="profileDetails"></p>
+<button onclick="logout()">Logout</button>
 </div>
 </div>
 
 <div class="footer"></div>
 
 <script>
-let mode="login"
 let currentUser=null
-function toggleAuth(){
+let mode="login"
+
+function navigate(page){
+if(page==="robux"||page==="profile"){
+if(!currentUser){navigate("auth");return}
+}
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"))
+document.getElementById(page).classList.add("active")
+if(page==="profile"&&currentUser){
+let users=JSON.parse(localStorage.getItem("users")||"{}")
+let data=users[currentUser]
+document.getElementById("profileDetails").innerText="Username: "+currentUser+(data.email?" | Email: "+data.email:"")
+}
+}
+
+function toggleMode(){
 mode=mode==="login"?"signup":"login"
 document.getElementById("authTitle").innerText=mode==="login"?"Login":"Create Account"
-document.getElementById("email").classList.toggle("hidden")
+document.getElementById("authEmail").style.display=mode==="signup"?"block":"none"
 }
-function handleAuth(){
-let u=document.getElementById("username").value
-let p=document.getElementById("password").value
-let e=document.getElementById("email").value
+
+function submitAuth(){
+let u=document.getElementById("authUser").value
+let p=document.getElementById("authPass").value
+let e=document.getElementById("authEmail").value
 if(!u||!p)return
-if(mode==="signup"){
 let users=JSON.parse(localStorage.getItem("users")||"{}")
-if(users[u]){alert("Account exists");return}
+if(mode==="signup"){
+if(users[u]){alert("Account already exists");return}
 users[u]={password:p,email:e,permission:document.getElementById("emailPermission").checked}
 localStorage.setItem("users",JSON.stringify(users))
 currentUser=u
 }else{
-let users=JSON.parse(localStorage.getItem("users")||"{}")
-if(!users[u]||users[u].password!==p){alert("Invalid login");return}
+if(!users[u]||users[u].password!==p){alert("Invalid credentials");return}
 currentUser=u
 }
-document.getElementById("auth").classList.add("hidden")
-document.getElementById("home").classList.remove("hidden")
+navigate("home")
 }
-function showHome(){
-hideAll()
-document.getElementById("home").classList.remove("hidden")
-}
-function showRobux(){
-if(!currentUser){showAuth();return}
-hideAll()
-document.getElementById("robux").classList.remove("hidden")
-}
-function showProfile(){
-if(!currentUser){showAuth();return}
-hideAll()
-document.getElementById("profile").classList.remove("hidden")
-document.getElementById("profileInfo").innerText="Logged in as "+currentUser
-}
-function showAuth(){
-hideAll()
-document.getElementById("auth").classList.remove("hidden")
-}
-function hideAll(){
-document.querySelectorAll(".section").forEach(s=>s.classList.add("hidden"))
-}
+
 function logout(){
 currentUser=null
-showHome()
+navigate("home")
 }
-function sendRobux(){
+
+function processRobux(){
 let user=document.getElementById("robuxUser").value
 let amount=document.getElementById("robuxAmount").value
 if(!user||!amount)return
-document.getElementById("robuxStatus").innerText="Redirecting to official Roblox purchase flow"
+document.getElementById("robuxMessage").innerText="Redirecting to official Roblox purchase flow"
+}
+
+function toggleFaq(element){
+let answer=element.nextElementSibling
+answer.style.display=answer.style.display==="block"?"none":"block"
 }
 </script>
 
