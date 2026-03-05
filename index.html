@@ -33,11 +33,20 @@ button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 .text-label{font-size:13.5px;color:rgba(255,255,255,.85);cursor:pointer}
 .text-label a{color:#c89eff;text-decoration:none}
 .text-label a:hover{text-decoration:underline}
-.profile-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:28px;margin:3rem 0}
-.profile-card{background:rgba(40,30,60,.4);border:1px solid rgba(180,120,255,.15);border-radius:18px;padding:28px;text-align:center;transition:all .4s}
-.profile-card:hover{transform:translateY(-8px);box-shadow:0 18px 45px rgba(0,0,0,.55)}
-.profile-card h4{margin:1rem 0;font-size:1.3rem;color:#c89eff}
-.profile-card p{font-size:1.05rem;line-height:1.6}
+.item-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:28px;margin:3rem 0}
+.item-card{background:rgba(40,30,60,.4);border:1px solid rgba(180,120,255,.15);border-radius:18px;padding:24px;text-align:center;transition:all .4s}
+.item-card:hover{transform:translateY(-8px);box-shadow:0 18px 45px rgba(0,0,0,.55)}
+.item-card.unavailable{opacity:.48;filter:grayscale(90%);pointer-events:none}
+.item-card img{width:140px;height:140px;object-fit:contain;border-radius:14px;margin-bottom:16px;background:rgba(0,0,0,.35);border:1px solid rgba(180,120,255,.2)}
+.item-card h4{margin:.6rem 0;font-size:1.15rem}
+.item-card p.points{font-size:1rem;color:#c89eff;font-weight:500}
+.item-card p.stock{font-size:.95rem;margin:.4rem 0}
+.item-card button{margin-top:14px;padding:10px 24px;font-size:1rem}
+.warning-box,.info-box,.rewards-box{background:rgba(40,30,60,.3);border:1px solid rgba(180,120,255,.1);padding:36px;border-radius:22px;max-width:860px;margin:3rem auto;transition:all .4s}
+.warning-box h3,.info-box h3,.rewards-box h3{color:#c89eff;margin-bottom:1.5rem;font-size:1.7rem}
+.warning-box p,.info-box p,.rewards-box p{font-size:1.08rem;line-height:1.75;margin:1.1rem 0}
+.discord-btn{display:block;width:260px;margin:4rem auto;cursor:pointer;transition:all .4s;border-radius:20px;overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,.45)}
+.discord-btn:hover{transform:scale(1.1);box-shadow:0 24px 60px rgba(155,76,255,.45)}
 .chat-area{background:rgba(40,30,60,.3);border:1px solid rgba(180,120,255,.15);border-radius:20px;padding:24px;max-width:900px;margin:3rem auto;height:400px;overflow-y:auto}
 .chat-area p{text-align:center;opacity:.8;padding:2rem}
 .message{display:flex;align-items:flex-start;margin:1rem 0}
@@ -50,11 +59,6 @@ button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 #chatInput{flex:1;padding:14px;border:none;border-radius:14px;background:rgba(255,255,255,.06);color:#fff;font-size:16px}
 #chatInput:focus{outline:none;background:rgba(255,255,255,.12)}
 #sendBtn{width:80px;margin-left:12px;background:linear-gradient(90deg,#9b4dff,#ff6ec7);border:none;border-radius:14px;color:#fff;cursor:pointer}
-.warning-box,.info-box,.rewards-box{background:rgba(40,30,60,.3);border:1px solid rgba(180,120,255,.1);padding:36px;border-radius:22px;max-width:860px;margin:3rem auto;transition:all .4s}
-.warning-box h3,.info-box h3,.rewards-box h3{color:#c89eff;margin-bottom:1.5rem;font-size:1.7rem}
-.warning-box p,.info-box p,.rewards-box p{font-size:1.08rem;line-height:1.75;margin:1.1rem 0}
-.discord-btn{display:block;width:260px;margin:4rem auto;cursor:pointer;transition:all .4s;border-radius:20px;overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,.45)}
-.discord-btn:hover{transform:scale(1.1);box-shadow:0 24px 60px rgba(155,76,255,.45)}
 .footer{text-align:center;padding:120px 20px 160px;font-size:.95rem;opacity:.55}
 .snowflake{position:fixed;top:-20px;width:7px;height:7px;background:#fff;border-radius:50%;pointer-events:none;z-index:0;opacity:.7;animation:snowfall linear infinite}
 @keyframes snowfall{0%{transform:translateY(-20px) translateX(0) rotate(0deg)}100%{transform:translateY(110vh) translateX(40px) rotate(360deg)}}
@@ -119,9 +123,8 @@ button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 
 <div id="community" class="page">
 <div class="rewards-box">
-<h3>Community</h3>
-<p>View member profiles see bios and chat with other users right here. Points are given for activity in Discord general channel.</p>
-<p>Only logged in members can chat post profiles or view full details.</p>
+<h3>Community Chat & Profiles</h3>
+<p>Chat with other members here and view profiles. Points are awarded based on activity in Discord general channel.</p>
 </div>
 
 <div class="profile-grid" id="profiles"></div>
@@ -141,7 +144,7 @@ button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 <h2 id="authTitle">Login</h2>
 <input id="authUser" placeholder="Username">
 <input id="authPass" type="password" placeholder="Password">
-<input id="authDiscord" placeholder="Discord Username#0000" style="display:none">
+<input id="authDiscord" placeholder="Discord Username" style="display:none">
 <input id="authBio" placeholder="Short bio (optional)" style="display:none">
 <input id="authEmail" placeholder="Email (optional)" style="display:none">
 
@@ -184,8 +187,6 @@ let mode="login"
 let userPoints=0
 let userBio=""
 let messages=[]
-
-const webhook="https://discord.com/api/webhooks/1478939104266682379/IebkvFHpeccFN6-PNVoCCgBMZ7heW9ljO9dGg4k9rn2elcbGQENSMGp9LUiOpV3wiUJx"
 
 const shopItems=[
 {id:1,name:"Valkyrie Helm",icon:"https://files.catbox.moe/mbqcon.jpeg",points:25000,stock:3},
@@ -283,7 +284,6 @@ let msg={user:currentUser,text:text,own:true,time:new Date().toLocaleTimeString(
 messages.push(msg)
 addMessageToChat(currentUser,text,true)
 input.value=""
-fetch(webhook,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({content:`Chat message from ${currentUser}: ${text}`})})
 }
 
 function addMessageToChat(user,text,own=false){
@@ -334,7 +334,6 @@ localStorage.setItem("users",JSON.stringify(users))
 currentUser=u
 userPoints=0
 userBio=b
-fetch(webhook,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({content:`New signup: ${u} | Discord: ${d}`})})
 }else{
 if(!users[u]||users[u].password!==p){alert("Wrong username or password");return}
 currentUser=u
@@ -353,12 +352,15 @@ users[currentUser].bio=b
 localStorage.setItem("users",JSON.stringify(users))
 userBio=b
 alert("Bio updated")
+saveSession()
 }
 }
 
 function saveSession(){
 if(currentUser){
 localStorage.setItem("currentUser",currentUser)
+localStorage.setItem("userPoints",userPoints)
+localStorage.setItem("userBio",userBio)
 }
 }
 
@@ -368,8 +370,8 @@ if(saved){
 let users=JSON.parse(localStorage.getItem("users")||"{}")
 if(users[saved]){
 currentUser=saved
-userPoints=users[saved].points||0
-userBio=users[saved].bio||""
+userPoints=parseInt(localStorage.getItem("userPoints"))||users[saved].points||0
+userBio=localStorage.getItem("userBio")||users[saved].bio||""
 navigate("home")
 }
 }
@@ -377,6 +379,8 @@ navigate("home")
 
 function logout(){
 localStorage.removeItem("currentUser")
+localStorage.removeItem("userPoints")
+localStorage.removeItem("userBio")
 currentUser=null
 userPoints=0
 userBio=""
