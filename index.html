@@ -6,22 +6,30 @@
 <title>BloxRewards</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-body{margin:0;font-family:Inter,system-ui;background:linear-gradient(180deg,#0a0a0f,#140a1f);color:#fff}
-nav{position:fixed;top:0;width:100%;background:rgba(0,0,0,.6);backdrop-filter:blur(12px);display:flex;justify-content:space-between;align-items:center;padding:16px 40px;z-index:1000}
-nav h1{margin:0;font-size:20px}
-nav .links span{margin-left:30px;cursor:pointer;font-weight:600;opacity:.8}
-nav .links span:hover{opacity:1}
-.page{display:none;min-height:100vh;padding:120px 20px 60px 20px;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-.active{display:flex}
-.card{background:rgba(255,255,255,.05);backdrop-filter:blur(15px);padding:40px;border-radius:20px;max-width:500px;width:100%;box-shadow:0 0 40px rgba(0,0,0,.4)}
-input{width:100%;padding:14px;margin:10px 0;border:none;border-radius:10px;background:rgba(255,255,255,.1);color:#fff}
-button{width:100%;padding:14px;border:none;border-radius:10px;background:linear-gradient(90deg,#7b2ff7,#f107a3);color:#fff;font-weight:600;cursor:pointer;margin-top:10px}
-button:hover{opacity:.9}
-.faq{max-width:800px;margin:auto;text-align:left}
-.faq-item{margin-top:20px;background:rgba(255,255,255,.05);padding:20px;border-radius:14px}
-.faq-item h3{margin:0;cursor:pointer}
-.faq-item p{margin-top:10px;display:none;opacity:.85}
-.footer{padding:40px;text-align:center;opacity:.6}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui;background:linear-gradient(180deg,#0a0a0f,#140a1f);color:#ffffff;overflow-x:hidden;position:relative}
+nav{position:fixed;top:0;left:0;width:100%;background:#0f0f17;display:flex;justify-content:space-between;align-items:center;padding:18px 50px;z-index:1000;border-bottom:1px solid rgba(255,255,255,0.08)}
+nav h1{margin:0;font-size:20px;font-weight:700;color:#ffffff}
+nav .links{display:flex;gap:30px}
+nav .links span{cursor:pointer;font-weight:600;color:#ffffff}
+nav .links span:hover{opacity:.7}
+.page{display:none;min-height:100vh;padding:140px 20px 80px 20px;max-width:1100px;margin:auto;position:relative;z-index:1}
+.active{display:block}
+.center{text-align:center}
+.card{background:#151524;padding:40px;border-radius:16px;max-width:500px;margin:40px auto 0 auto;position:relative;z-index:2}
+input{width:100%;padding:14px;margin-top:12px;border:none;border-radius:8px;background:#1e1e30;color:#ffffff}
+button{width:100%;padding:14px;margin-top:18px;border:none;border-radius:8px;background:#7b2ff7;color:#ffffff;font-weight:600;cursor:pointer}
+button:hover{opacity:.85}
+.faq{margin-top:60px;position:relative;z-index:2}
+.faq-item{background:#151524;padding:20px;border-radius:12px;margin-top:20px}
+.faq-item h3{margin:0;font-size:16px}
+.faq-item p{margin-top:12px;font-size:14px;opacity:.9}
+.footer{text-align:center;padding:40px 20px;opacity:.5;position:relative;z-index:2}
+.snowflake{position:fixed;top:-10px;width:10px;height:10px;background:white;border-radius:50%;opacity:0.8;pointer-events:none;z-index:0;animation:snowfall linear infinite}
+@keyframes snowfall{
+0%{transform:translateY(0px)}
+100%{transform:translateY(110vh)}
+}
 </style>
 </head>
 <body>
@@ -37,35 +45,37 @@ button:hover{opacity:.9}
 </nav>
 
 <div id="home" class="page active">
+<div class="center">
 <h2>Earn Robux Securely</h2>
-<p>All transfers use official Roblox purchasing systems and comply with platform policies.</p>
+<p>Transfers use official Roblox purchase systems and follow platform rules.</p>
+</div>
 
 <div class="faq">
 <h2>Recently Asked Questions</h2>
 
 <div class="faq-item">
-<h3 onclick="toggleFaq(this)">Does this use official Roblox systems?</h3>
-<p>Yes. All Robux transfers are completed through official Roblox purchasing systems such as gamepasses or developer products. No third party exploits or bypass methods are used.</p>
+<h3>Does this use official Roblox systems?</h3>
+<p>Yes. Transfers happen through gamepasses or developer products using Roblox marketplace purchasing.</p>
 </div>
 
 <div class="faq-item">
-<h3 onclick="toggleFaq(this)">Is this allowed under Roblox rules?</h3>
-<p>Yes. The process follows Roblox Terms of Service by using approved marketplace transactions. Funds move through legitimate purchase flows.</p>
+<h3>Is it allowed?</h3>
+<p>Yes. All transactions go through approved Roblox purchase flows without bypassing any systems.</p>
 </div>
 
 <div class="faq-item">
-<h3 onclick="toggleFaq(this)">Why do I need an account here?</h3>
-<p>You must create an account to access the Robux transfer section. This keeps user actions separate and ensures only registered users can initiate transfers.</p>
+<h3>Why do I need an account?</h3>
+<p>An account is required before accessing the Robux section so actions stay tied to registered users only.</p>
 </div>
 
 <div class="faq-item">
-<h3 onclick="toggleFaq(this)">How do I actually receive the Robux?</h3>
-<p>You need a purchasable asset on Roblox such as a gamepass or developer product. Once someone purchases it, the Robux is transferred through Roblox automatically.</p>
+<h3>How do I receive Robux?</h3>
+<p>You must have a purchasable item such as a gamepass. Once purchased, Roblox automatically transfers the Robux.</p>
 </div>
 
 <div class="faq-item">
-<h3 onclick="toggleFaq(this)">Is email required?</h3>
-<p>Email is optional. If you choose to provide it and grant permission, it can be used for updates or notifications. It is not required to use the core features.</p>
+<h3>Is email required?</h3>
+<p>No. Email is optional and only used if you give permission for notifications.</p>
 </div>
 
 </div>
@@ -77,7 +87,9 @@ button:hover{opacity:.9}
 <input id="authUser" placeholder="Username">
 <input id="authPass" type="password" placeholder="Password">
 <input id="authEmail" placeholder="Email" style="display:none">
-<label style="font-size:12px;display:block;margin-top:5px"><input type="checkbox" id="emailPermission"> I agree to receive emails</label>
+<label style="font-size:12px;margin-top:10px;display:block">
+<input type="checkbox" id="emailPermission"> Allow email notifications
+</label>
 <button onclick="submitAuth()">Continue</button>
 <p style="margin-top:15px;cursor:pointer" onclick="toggleMode()">Switch to Sign Up</p>
 </div>
@@ -89,7 +101,7 @@ button:hover{opacity:.9}
 <input id="robuxUser" placeholder="Roblox Username">
 <input id="robuxAmount" placeholder="Amount">
 <button onclick="processRobux()">Proceed</button>
-<p id="robuxMessage"></p>
+<p id="robuxMessage" style="margin-top:15px"></p>
 </div>
 </div>
 
@@ -108,8 +120,8 @@ let currentUser=null
 let mode="login"
 
 function navigate(page){
-if(page==="robux"||page==="profile"){
-if(!currentUser){navigate("auth");return}
+if((page==="robux"||page==="profile")&&!currentUser){
+page="auth"
 }
 document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"))
 document.getElementById(page).classList.add("active")
@@ -156,9 +168,15 @@ if(!user||!amount)return
 document.getElementById("robuxMessage").innerText="Redirecting to official Roblox purchase flow"
 }
 
-function toggleFaq(element){
-let answer=element.nextElementSibling
-answer.style.display=answer.style.display==="block"?"none":"block"
+// Snow effect
+for(let i=0;i<100;i++){
+let snow=document.createElement('div')
+snow.classList.add('snowflake')
+snow.style.left=Math.random()*100+'vw'
+snow.style.width=snow.style.height=5+Math.random()*5+'px'
+snow.style.animationDuration=5+Math.random()*5+'s'
+snow.style.opacity=Math.random()
+document.body.appendChild(snow)
 }
 </script>
 
