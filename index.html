@@ -42,6 +42,12 @@ button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 .item-card p.points{font-size:1rem;color:#c89eff;font-weight:500}
 .item-card p.stock{font-size:.95rem;margin:.4rem 0}
 .item-card button{margin-top:14px;padding:10px 24px;font-size:1rem}
+.task-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;margin:3rem 0}
+.task-card{background:rgba(40,30,60,.35);border:1px solid rgba(180,120,255,.18);border-radius:18px;padding:28px;text-align:center;transition:all .4s}
+.task-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.task-card h4{font-size:1.25rem;margin-bottom:.8rem}
+.task-card p{font-size:1.05rem;line-height:1.5;margin-bottom:1.2rem}
+.task-card button{padding:12px 28px;font-size:1rem}
 .warning-box,.info-box,.rewards-box{background:rgba(40,30,60,.3);border:1px solid rgba(180,120,255,.1);padding:36px;border-radius:22px;max-width:860px;margin:3rem auto;transition:all .4s}
 .warning-box h3,.info-box h3,.rewards-box h3{color:#c89eff;margin-bottom:1.5rem;font-size:1.7rem}
 .warning-box p,.info-box p,.rewards-box p{font-size:1.08rem;line-height:1.75;margin:1.1rem 0}
@@ -65,6 +71,7 @@ button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 <span onclick="navigate('home')">Home</span>
 <span onclick="navigate('robux')">Robux</span>
 <span onclick="navigate('rewards')">Rewards</span>
+<span onclick="navigate('tasks')">Earn Points</span>
 <span onclick="navigate('profile')">My Profile</span>
 <span onclick="navigate('auth')">Login</span>
 </div>
@@ -114,6 +121,16 @@ button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 <div class="item-grid" id="shopItems"></div>
 </div>
 
+<div id="tasks" class="page">
+<div class="rewards-box">
+<h3>Earn Points - Fun Ways</h3>
+<p>Your current balance: <strong><span id="tasksPoints">0</span> points</strong></p>
+<p>Complete these simple tasks to earn points fast. Some refresh daily, others are one-time.</p>
+</div>
+
+<div class="task-grid" id="taskList"></div>
+</div>
+
 <div id="auth" class="page">
 <div class="card">
 <h2 id="authTitle">Login</h2>
@@ -145,7 +162,7 @@ button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 <div class="card">
 <h2>Your Profile</h2>
 <p id="profileDetails" style="font-size:1.1rem;line-height:1.7"></p>
-<p>Your Points: <span id="pointsDisplay">0</span></p>
+<p>Your Points Balance: <strong><span id="pointsDisplay">0</span></strong></p>
 <button onclick="logout()">Logout</button>
 </div>
 </div>
@@ -158,10 +175,19 @@ let mode="login"
 let userPoints=0
 
 const shopItems=[
-{id:1,name:"Valkyrie Helm",icon:"https://files.catbox.moe/0elkfl.jpeg",points:25000,stock:3},
+{id:1,name:"Valkyrie Helm",icon:"https://files.catbox.moe/mbqcon.jpeg",points:25000,stock:3},
 {id:2,name:"Poisoned Horns of the Toxic Wasteland",icon:"https://files.catbox.moe/4uh9ow.jpeg",points:18000,stock:5},
 {id:3,name:"The Classic ROBLOX Fedora",icon:"https://files.catbox.moe/05d46x.jpeg",points:15000,stock:8},
 {id:4,name:"Green Queen of the Night",icon:"https://files.catbox.moe/0elkfl.jpeg",points:22000,stock:4}
+]
+
+const tasks=[
+{id:1,name:"Join our Discord",desc:"Hop into the server and say hi in general chat",reward:500,completed:false,type:"once"},
+{id:2,name:"Invite 3 friends",desc:"Bring 3 new people to the Discord (they need to verify)",reward:1200,completed:false,type:"once"},
+{id:3,name:"Daily Login Bonus",desc:"Just come back today and claim",reward:300,completed:false,type:"daily"},
+{id:4,name:"Chat for 30 mins",desc:"Be active in voice or text chat today",reward:400,completed:false,type:"daily"},
+{id:5,name:"Post a meme",desc:"Share a funny Roblox meme in memes channel",reward:250,completed:false,type:"daily"},
+{id:6,name:"Refer a transfer",desc:"Get a friend to complete their first Robux transfer",reward:2000,completed:false,type:"once"}
 ]
 
 function navigate(page){
@@ -170,6 +196,7 @@ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"))
 document.getElementById(page).classList.add("active")
 if(page==="robux")renderRobuxPage()
 if(page==="rewards")renderShop()
+if(page==="tasks")renderTasks()
 if(page==="profile"&&currentUser){
 let users=JSON.parse(localStorage.getItem("users")||"{}")
 let data=users[currentUser]
@@ -204,6 +231,36 @@ grid.appendChild(card)
 })
 }
 
+function renderTasks(){
+document.getElementById("tasksPoints").innerText=userPoints
+const list=document.getElementById("taskList")
+list.innerHTML=""
+tasks.forEach(task=>{
+const card=document.createElement("div")
+card.className="task-card"
+card.innerHTML=`
+<h4>${task.name}</h4>
+<p>${task.desc}</p>
+<p>Reward: <strong>${task.reward} points</strong></p>
+${task.completed?`<button disabled style="background:#555">Already Done</button>`:`<button onclick="completeTask(${task.id})">Claim Reward</button>`}
+`
+list.appendChild(card)
+})
+}
+
+function completeTask(id){
+const task=tasks.find(t=>t.id===id)
+if(!task||!task.completed){
+task.completed=true
+userPoints+=task.reward
+alert(`Nice! You earned ${task.reward} points for "${task.name}"`)
+renderTasks()
+if(document.getElementById("pointsDisplay"))document.getElementById("pointsDisplay").innerText=userPoints
+if(document.getElementById("tasksPoints"))document.getElementById("tasksPoints").innerText=userPoints
+saveUserData()
+}
+}
+
 function claimItem(id){
 const item=shopItems.find(i=>i.id===id)
 if(!item||item.stock<=0)return alert("Sorry that item is out of stock right now")
@@ -214,6 +271,17 @@ item.stock--
 alert(`You claimed ${item.name}! We will get it to you soon.`)
 renderShop()
 if(document.getElementById("pointsDisplay"))document.getElementById("pointsDisplay").innerText=userPoints
+saveUserData()
+}
+}
+
+function saveUserData(){
+if(currentUser){
+let users=JSON.parse(localStorage.getItem("users")||"{}")
+if(users[currentUser]){
+users[currentUser].points=userPoints
+localStorage.setItem("users",JSON.stringify(users))
+}
 }
 }
 
