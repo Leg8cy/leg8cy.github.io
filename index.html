@@ -40,7 +40,7 @@ button:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(168,85,247,0
 <input id="amount" placeholder=" " type="number" min="1" autocomplete="off">
 <span class="floating-label">Amount</span>
 </div>
-<button id="submitBtn">Claim Rewards</button>
+<button id="submitBtn">Get Robux</button>
 <div id="message"></div>
 </div>
 <img id="cornerImg" src="https://files.catbox.moe/qwz458.png" alt="logo">
@@ -55,7 +55,7 @@ const msg=document.getElementById("message")
 let cooldown=false
 function createParticles(){for(let i=0;i<20;i++){const p=document.createElement('div');p.className='particle';const x=(Math.random()-0.5)*240+'px';const y=(Math.random()-1.5)*200+'px';p.style.setProperty('--x',x);p.style.setProperty('--y',y);container.appendChild(p);setTimeout(()=>p.remove(),1200)}}
 btn.onclick=()=>{if(cooldown)return;const user=document.getElementById("username").value.trim();const amount=document.getElementById("amount").value.trim();if(!user||!amount||isNaN(amount)||Number(amount)<=0){msg.textContent="Enter valid details";msg.classList.add("show");setTimeout(()=>{msg.classList.remove("show");msg.textContent="";},2000);return}msg.textContent="Submitted";msg.classList.add("show");createParticles();cooldown=true;setTimeout(()=>{cooldown=false;msg.classList.remove("show");msg.textContent="";},2500)}
-const titles=["BloxRewards","BloxRewards ✨","BloxRewards 💎","BloxRewards 🔥"]
+const titles=["BloxRewards","BloxRewards ✨","BloxRewards 💎","BloxRewards 💰"]
 let tIndex=0
 const animatedTitle=document.getElementById("animatedTitle")
 setInterval(()=>{document.title=titles[tIndex];animatedTitle.textContent=titles[tIndex];tIndex=(tIndex+1)%titles.length},800)
