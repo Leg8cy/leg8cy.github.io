@@ -102,6 +102,21 @@ button:disabled {
   transform: none;
   box-shadow: none;
 }
+.auth-redirect {
+  background: rgba(40,30,60,0.5);
+  padding: 32px;
+  border-radius: 16px;
+  text-align: center;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.auth-redirect h3 {
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
+}
+.auth-redirect button {
+  max-width: 260px;
+}
 label {
   font-size: 13.5px;
   display: block;
@@ -203,13 +218,7 @@ label a:hover { text-decoration: underline; }
 </div>
 
 <div id="robux" class="page">
-  <div class="card">
-    <h2>Robux Transfer</h2>
-    <input id="robuxUser" placeholder="Roblox Username">
-    <input id="robuxAmount" placeholder="Amount" type="number">
-    <button onclick="processRobux()">Proceed</button>
-    <p id="robuxMessage" style="margin-top:18px; min-height:24px;"></p>
-  </div>
+  <div id="robuxContent"></div>
 </div>
 
 <div id="profile" class="page">
@@ -220,21 +229,50 @@ label a:hover { text-decoration: underline; }
   </div>
 </div>
 
-<div class="footer">© 2025 BloxRewards • Not affiliated with Roblox</div>
+<div class="footer">© 2026 BloxRewards. All Rights Reserved.</div>
 
 <script>
 let currentUser = null;
 let mode = "login";
 
 function navigate(page) {
-  if ((page === "robux" || page === "profile") && !currentUser) page = "auth";
+  if ((page === "robux" || page === "profile") && !currentUser) {
+    page = "auth";
+  }
   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
   document.getElementById(page).classList.add("active");
+
+  if (page === "robux") {
+    renderRobuxPage();
+  }
   if (page === "profile" && currentUser) {
     let users = JSON.parse(localStorage.getItem("users") || "{}");
     let data = users[currentUser];
     document.getElementById("profileDetails").innerText = 
       `Username: ${currentUser}${data.email ? `\nEmail: ${data.email}` : ""}`;
+  }
+}
+
+function renderRobuxPage() {
+  const content = document.getElementById("robuxContent");
+  if (!currentUser) {
+    content.innerHTML = `
+      <div class="auth-redirect">
+        <h3>Please log in first</h3>
+        <p style="margin-bottom:1.5rem; opacity:0.9;">You need an account to access Robux transfers</p>
+        <button onclick="navigate('auth')">Go to Login</button>
+      </div>
+    `;
+  } else {
+    content.innerHTML = `
+      <div class="card">
+        <h2>Robux Transfer</h2>
+        <input id="robuxUser" placeholder="Roblox Username">
+        <input id="robuxAmount" placeholder="Amount" type="number">
+        <button onclick="processRobux()">Proceed</button>
+        <p id="robuxMessage" style="margin-top:18px; min-height:24px;"></p>
+      </div>
+    `;
   }
 }
 
@@ -302,7 +340,9 @@ for (let i = 0; i < 80; i++) {
 
 document.getElementById("authUser").addEventListener("input", updateButtonState);
 document.getElementById("authPass").addEventListener("input", updateButtonState);
-document.getElementById("termsAgree")?.addEventListener("change", updateButtonState);
+if (document.getElementById("termsAgree")) {
+  document.getElementById("termsAgree").addEventListener("change", updateButtonState);
+}
 </script>
 </body>
 </html>
