@@ -7,178 +7,337 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Inter,system-ui;background:linear-gradient(180deg,#0a0a0f,#140a1f);color:#ffffff;overflow-x:hidden;position:relative}
-nav{position:fixed;top:0;left:0;width:100%;background:#0f0f17;display:flex;justify-content:space-between;align-items:center;padding:18px 50px;z-index:1000;border-bottom:1px solid rgba(255,255,255,0.08)}
-nav h1{margin:0;font-size:20px;font-weight:700;color:#ffffff}
-nav .links{display:flex;gap:30px}
-nav .links span{cursor:pointer;font-weight:600;color:#ffffff}
-nav .links span:hover{opacity:.7}
-.page{display:none;min-height:100vh;padding:140px 20px 80px 20px;max-width:1100px;margin:auto;position:relative;z-index:1}
+body{
+  margin:0;
+  font-family:Inter,system-ui;
+  background:linear-gradient(180deg,#0a0a0f,#140a1f);
+  color:#ffffff;
+  overflow-x:hidden;
+  position:relative;
+  min-height:100vh;
+}
+nav{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  background:rgba(15,15,23,0.65);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 40px;
+  z-index:1000;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+nav h1{margin:0;font-size:22px;font-weight:700}
+nav .links{display:flex;gap:32px}
+nav .links span{cursor:pointer;font-weight:600;opacity:0.85}
+nav .links span:hover{opacity:1}
+.page{
+  display:none;
+  min-height:100vh;
+  padding:120px 20px 80px;
+  max-width:1100px;
+  margin:auto;
+  position:relative;
+  z-index:1;
+}
 .active{display:block}
 .center{text-align:center}
-.card{background:#151524;padding:40px;border-radius:16px;max-width:500px;margin:40px auto 0 auto;position:relative;z-index:2}
-input{width:100%;padding:14px;margin-top:12px;border:none;border-radius:8px;background:#1e1e30;color:#ffffff}
-button{width:100%;padding:14px;margin-top:18px;border:none;border-radius:8px;background:#7b2ff7;color:#ffffff;font-weight:600;cursor:pointer}
-button:hover{opacity:.85}
-.faq{margin-top:60px;position:relative;z-index:2}
-.faq-item{background:#151524;padding:20px;border-radius:12px;margin-top:20px}
-.faq-item h3{margin:0;font-size:16px}
-.faq-item p{margin-top:12px;font-size:14px;opacity:.9}
-.footer{text-align:center;padding:40px 20px;opacity:.5;position:relative;z-index:2}
-.snowflake{position:fixed;top:-10px;width:10px;height:10px;background:white;border-radius:50%;opacity:0.8;pointer-events:none;z-index:0;animation:snowfall linear infinite}
+.card{
+  background:rgba(20,20,35,0.7);
+  backdrop-filter:blur(12px);
+  padding:40px;
+  border-radius:20px;
+  max-width:520px;
+  margin:40px auto;
+  box-shadow:0 8px 40px rgba(0,0,0,0.5);
+  border:1px solid rgba(255,255,255,0.06);
+}
+input{
+  width:100%;
+  padding:14px;
+  margin:12px 0 8px;
+  border:none;
+  border-radius:10px;
+  background:rgba(255,255,255,0.08);
+  color:#fff;
+  font-size:16px;
+}
+input::placeholder{opacity:0.6}
+button{
+  width:100%;
+  padding:15px;
+  margin-top:16px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(90deg,#7b2ff7,#c028f5);
+  color:#fff;
+  font-weight:600;
+  font-size:16px;
+  cursor:pointer;
+  transition:opacity 0.2s;
+}
+button:hover{opacity:0.92}
+button:disabled{
+  opacity:0.5;
+  cursor:not-allowed;
+}
+label{
+  font-size:13px;
+  margin-top:12px;
+  display:block;
+  opacity:0.9;
+}
+.faq{margin-top:50px}
+.faq-item{
+  background:rgba(25,25,40,0.5);
+  padding:18px 22px;
+  border-radius:14px;
+  margin-top:16px;
+  border:1px solid rgba(255,255,255,0.05);
+}
+.faq-item h3{
+  margin:0;
+  font-size:16px;
+  cursor:pointer;
+}
+.faq-item p{
+  margin-top:12px;
+  font-size:14px;
+  opacity:0.88;
+  display:none;
+}
+.footer{
+  text-align:center;
+  padding:50px 20px;
+  opacity:0.5;
+  font-size:14px;
+}
+.snowflake{
+  position:fixed;
+  top:-15px;
+  width:8px;
+  height:8px;
+  background:#fff;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:0;
+  opacity:0.75;
+  animation:snowfall linear infinite;
+}
 @keyframes snowfall{
-0%{transform:translateY(0px)}
-100%{transform:translateY(110vh)}
+  0%{transform:translateY(-15px) translateX(0)}
+  100%{transform:translateY(110vh) translateX(30px)}
 }
 </style>
 </head>
 <body>
 
 <nav>
-<h1>BloxRewards</h1>
-<div class="links">
-<span onclick="navigate('home')">Home</span>
-<span onclick="navigate('robux')">Robux</span>
-<span onclick="navigate('profile')">My Profile</span>
-<span onclick="navigate('auth')">Login</span>
-</div>
+  <h1>BloxRewards</h1>
+  <div class="links">
+    <span onclick="navigate('home')">Home</span>
+    <span onclick="navigate('robux')">Robux</span>
+    <span onclick="navigate('profile')">My Profile</span>
+    <span onclick="navigate('auth')">Login</span>
+  </div>
 </nav>
 
 <div id="home" class="page active">
-<div class="center">
-<h2>Earn Robux Securely</h2>
-<p>Transfers use official Roblox purchase systems and follow platform rules.</p>
-</div>
-
-<div class="faq">
-<h2>Recently Asked Questions</h2>
-
-<div class="faq-item">
-<h3>Does this use official Roblox systems?</h3>
-<p>Yes. Transfers happen through gamepasses or developer products using Roblox marketplace purchasing.</p>
-</div>
-
-<div class="faq-item">
-<h3>Is it allowed?</h3>
-<p>Yes. All transactions go through approved Roblox purchase flows without bypassing any systems.</p>
-</div>
-
-<div class="faq-item">
-<h3>Why do I need an account?</h3>
-<p>An account is required before accessing the Robux section so actions stay tied to registered users only.</p>
-</div>
-
-<div class="faq-item">
-<h3>How do I receive Robux?</h3>
-<p>You must have a purchasable item such as a gamepass. Once purchased, Roblox automatically transfers the Robux.</p>
-</div>
-
-<div class="faq-item">
-<h3>Is email required?</h3>
-<p>No. Email is optional and only used if you give permission for notifications.</p>
-</div>
-
-</div>
+  <div class="center">
+    <h2>Earn Robux Securely</h2>
+    <p>Transfers use official Roblox purchase systems and follow platform rules.</p>
+  </div>
+  
+  <div class="faq">
+    <h2>Recently Asked Questions</h2>
+    <div class="faq-item">
+      <h3 onclick="toggleFaq(this)">Does this use official Roblox systems?</h3>
+      <p>Yes. Transfers happen through gamepasses or developer products using Roblox marketplace purchasing.</p>
+    </div>
+    <div class="faq-item">
+      <h3 onclick="toggleFaq(this)">Is it allowed?</h3>
+      <p>Yes. All transactions go through approved Roblox purchase flows without bypassing any systems.</p>
+    </div>
+    <div class="faq-item">
+      <h3 onclick="toggleFaq(this)">Why do I need an account?</h3>
+      <p>An account is required before accessing the Robux section so actions stay tied to registered users only.</p>
+    </div>
+    <div class="faq-item">
+      <h3 onclick="toggleFaq(this)">How do I receive Robux?</h3>
+      <p>You must have a purchasable item such as a gamepass. Once purchased, Roblox automatically transfers the Robux.</p>
+    </div>
+    <div class="faq-item">
+      <h3 onclick="toggleFaq(this)">Is email required?</h3>
+      <p>No. Email is optional and only used if you give permission for notifications.</p>
+    </div>
+  </div>
 </div>
 
 <div id="auth" class="page">
-<div class="card">
-<h2 id="authTitle">Login</h2>
-<input id="authUser" placeholder="Username">
-<input id="authPass" type="password" placeholder="Password">
-<input id="authEmail" placeholder="Email" style="display:none">
-<label style="font-size:12px;margin-top:10px;display:block">
-<input type="checkbox" id="emailPermission"> Allow email notifications
-</label>
-<button onclick="submitAuth()">Continue</button>
-<p style="margin-top:15px;cursor:pointer" onclick="toggleMode()">Switch to Sign Up</p>
-</div>
+  <div class="card">
+    <h2 id="authTitle">Login</h2>
+    <input id="authUser" placeholder="Username" autocomplete="off">
+    <input id="authPass" type="password" placeholder="Password" autocomplete="off">
+    <input id="authEmail" placeholder="Email (optional)" style="display:none">
+    
+    <label id="termsLabel" style="display:none">
+      <input type="checkbox" id="termsAgree"> I agree to the <a href="#" style="color:#9b7aff;text-decoration:none">terms & conditions</a> and understand this is not official Roblox support.
+    </label>
+    
+    <label style="font-size:13px;margin-top:8px">
+      <input type="checkbox" id="emailPermission"> Allow email notifications (optional)
+    </label>
+    
+    <button id="authButton" onclick="submitAuth()" disabled>Continue</button>
+    
+    <p style="margin-top:18px;cursor:pointer;color:#9b7aff" onclick="toggleMode()">Switch to Sign Up</p>
+  </div>
 </div>
 
 <div id="robux" class="page">
-<div class="card">
-<h2>Robux Transfer</h2>
-<input id="robuxUser" placeholder="Roblox Username">
-<input id="robuxAmount" placeholder="Amount">
-<button onclick="processRobux()">Proceed</button>
-<p id="robuxMessage" style="margin-top:15px"></p>
-</div>
+  <div class="card">
+    <h2>Robux Transfer</h2>
+    <input id="robuxUser" placeholder="Roblox Username">
+    <input id="robuxAmount" placeholder="Amount" type="number">
+    <button onclick="processRobux()">Proceed</button>
+    <p id="robuxMessage" style="margin-top:16px;min-height:20px"></p>
+  </div>
 </div>
 
 <div id="profile" class="page">
-<div class="card">
-<h2>Account Profile</h2>
-<p id="profileDetails"></p>
-<button onclick="logout()">Logout</button>
-</div>
+  <div class="card">
+    <h2>Account Profile</h2>
+    <p id="profileDetails"></p>
+    <button onclick="logout()">Logout</button>
+  </div>
 </div>
 
-<div class="footer"></div>
+<div class="footer">© 2025 BloxRewards • Not affiliated with Roblox Corp.</div>
 
 <script>
-let currentUser=null
-let mode="login"
+// ────────────────────────────────────────────────
+let currentUser = null
+let mode = "login"
 
+// Navigation
 function navigate(page){
-if((page==="robux"||page==="profile")&&!currentUser){
-page="auth"
-}
-document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"))
-document.getElementById(page).classList.add("active")
-if(page==="profile"&&currentUser){
-let users=JSON.parse(localStorage.getItem("users")||"{}")
-let data=users[currentUser]
-document.getElementById("profileDetails").innerText="Username: "+currentUser+(data.email?" | Email: "+data.email:"")
-}
+  if((page==="robux" || page==="profile") && !currentUser){
+    page = "auth"
+  }
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"))
+  document.getElementById(page).classList.add("active")
+  
+  if(page==="profile" && currentUser){
+    let users = JSON.parse(localStorage.getItem("users") || "{}")
+    let data = users[currentUser]
+    document.getElementById("profileDetails").innerText = 
+      "Username: " + currentUser + (data.email ? " | Email: " + data.email : "")
+  }
 }
 
+// Mode toggle (login ↔ signup)
 function toggleMode(){
-mode=mode==="login"?"signup":"login"
-document.getElementById("authTitle").innerText=mode==="login"?"Login":"Create Account"
-document.getElementById("authEmail").style.display=mode==="signup"?"block":"none"
+  mode = mode === "login" ? "signup" : "login"
+  document.getElementById("authTitle").innerText = mode === "login" ? "Login" : "Create Account"
+  document.getElementById("authEmail").style.display = mode === "signup" ? "block" : "none"
+  document.getElementById("termsLabel").style.display = mode === "signup" ? "block" : "none"
+  updateButtonState()
 }
 
+// Enable/disable continue button
+function updateButtonState(){
+  let btn = document.getElementById("authButton")
+  let user = document.getElementById("authUser").value.trim()
+  let pass = document.getElementById("authPass").value
+  let terms = document.getElementById("termsAgree")
+  
+  if(mode === "signup"){
+    btn.disabled = !(user && pass && terms.checked)
+  } else {
+    btn.disabled = !(user && pass)
+  }
+}
+
+// Auth submit
 function submitAuth(){
-let u=document.getElementById("authUser").value
-let p=document.getElementById("authPass").value
-let e=document.getElementById("authEmail").value
-if(!u||!p)return
-let users=JSON.parse(localStorage.getItem("users")||"{}")
-if(mode==="signup"){
-if(users[u]){alert("Account already exists");return}
-users[u]={password:p,email:e,permission:document.getElementById("emailPermission").checked}
-localStorage.setItem("users",JSON.stringify(users))
-currentUser=u
-}else{
-if(!users[u]||users[u].password!==p){alert("Invalid credentials");return}
-currentUser=u
-}
-navigate("home")
+  let u = document.getElementById("authUser").value.trim()
+  let p = document.getElementById("authPass").value
+  let e = document.getElementById("authEmail").value.trim()
+  
+  if(!u || !p) return
+  
+  let users = JSON.parse(localStorage.getItem("users") || "{}")
+  
+  if(mode === "signup"){
+    if(users[u]){alert("Username already taken");return}
+    users[u] = {
+      password: p,
+      email: e || null,
+      permission: document.getElementById("emailPermission").checked
+    }
+    localStorage.setItem("users", JSON.stringify(users))
+    currentUser = u
+  } else {
+    if(!users[u] || users[u].password !== p){
+      alert("Invalid username or password")
+      return
+    }
+    currentUser = u
+  }
+  
+  playClick()
+  navigate("home")
 }
 
+// Logout
 function logout(){
-currentUser=null
-navigate("home")
+  currentUser = null
+  navigate("home")
 }
 
+// Robux process
 function processRobux(){
-let user=document.getElementById("robuxUser").value
-let amount=document.getElementById("robuxAmount").value
-if(!user||!amount)return
-document.getElementById("robuxMessage").innerText="Redirecting to official Roblox purchase flow"
+  let user = document.getElementById("robuxUser").value.trim()
+  let amount = document.getElementById("robuxAmount").value
+  if(!user || !amount) return
+  
+  document.getElementById("robuxMessage").innerText = "Redirecting to official Roblox purchase flow..."
+  playClick()
+  // In real version → actual redirect or fetch here
 }
 
-// Snow effect
-for(let i=0;i<100;i++){
-let snow=document.createElement('div')
-snow.classList.add('snowflake')
-snow.style.left=Math.random()*100+'vw'
-snow.style.width=snow.style.height=5+Math.random()*5+'px'
-snow.style.animationDuration=5+Math.random()*5+'s'
-snow.style.opacity=Math.random()
-document.body.appendChild(snow)
+// FAQ toggle
+function toggleFaq(el){
+  let p = el.nextElementSibling
+  p.style.display = p.style.display === "block" ? "none" : "block"
 }
+
+// Simple click sound
+function playClick(){
+  let audio = new Audio("data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=")
+  audio.play().catch(()=>{})
+}
+
+// Snow
+for(let i = 0; i < 90; i++){
+  let s = document.createElement("div")
+  s.className = "snowflake"
+  s.style.left = Math.random() * 100 + "vw"
+  s.style.width = s.style.height = (4 + Math.random() * 6) + "px"
+  s.style.animationDuration = (6 + Math.random() * 8) + "s"
+  s.style.animationDelay = Math.random() * -15 + "s"
+  s.style.opacity = 0.4 + Math.random() * 0.5
+  document.body.appendChild(s)
+}
+
+// Listeners for button state
+document.getElementById("authUser").addEventListener("input", updateButtonState)
+document.getElementById("authPass").addEventListener("input", updateButtonState)
+document.getElementById("termsAgree")?.addEventListener("change", updateButtonState)
 </script>
-
 </body>
 </html>
