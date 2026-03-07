@@ -1,4 +1,3 @@
-html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,29 +6,17 @@ html
 <title>Legacy</title>
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Inter,system-ui;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui}
 
 body{
 height:100vh;
+width:100%;
 display:flex;
 align-items:center;
 justify-content:center;
 overflow:hidden;
 color:white;
-background:linear-gradient(270deg,#0a0a0a,#111,#1a1a1a,#000);
-background-size:800% 800%;
-animation:bgMove 18s ease infinite;
-}
-
-@keyframes bgMove{
-0%{background-position:0% 50%}
-50%{background-position:100% 50%}
-100%{background-position:0% 50%}
+background:transparent
 }
 
 #snow{
@@ -38,143 +25,133 @@ top:0;
 left:0;
 width:100%;
 height:100%;
-pointer-events:none;
+z-index:-1
 }
 
-.card{
-backdrop-filter:blur(12px);
-background:rgba(0,0,0,0.55);
-border-radius:16px;
-padding:40px;
-text-align:center;
-box-shadow:0 0 60px rgba(0,0,0,0.8);
+.profile{
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:14px
 }
 
-.avatar{
-width:110px;
-height:110px;
+.pfp{
+width:120px;
+height:120px;
 border-radius:50%;
-object-fit:cover;
-margin-bottom:12px;
-border:2px solid rgba(255,255,255,0.15);
+object-fit:cover
 }
 
 .name{
-font-size:28px;
-font-weight:700;
-margin-bottom:18px;
+font-size:32px;
+font-weight:700
 }
 
 .socials{
 display:flex;
-justify-content:center;
-gap:14px;
+gap:16px;
+margin-top:10px
 }
 
-.social{
-width:48px;
-height:48px;
+.btn{
+width:52px;
+height:52px;
 display:flex;
 align-items:center;
 justify-content:center;
-background:rgba(255,255,255,0.05);
-border-radius:10px;
 cursor:pointer;
-transition:.25s;
+transition:.25s
 }
 
-.social:hover{
-transform:scale(1.12);
-background:rgba(255,255,255,0.12);
+.btn:hover{
+transform:scale(1.15)
 }
 
-.social img{
-width:26px;
-height:26px;
+.btn img{
+width:30px;
+height:30px
 }
 </style>
-</head>
 
+</head>
 <body>
 
 <canvas id="snow"></canvas>
 
-<div class="card">
+<div class="profile">
 
-<img class="avatar" src="https://files.catbox.moe/jmuanj.jpg">
+<img class="pfp" src="https://files.catbox.moe/jmuanj.jpg">
 
 <div class="name">Legacy</div>
 
 <div class="socials">
 
-<div class="social" onclick="window.open('https://www.roblox.com/users/1331464429/profile')">
+<div class="btn" onclick="window.open('https://www.roblox.com/users/1331464429/profile')">
 <img src="https://files.catbox.moe/2lhsiw.png">
 </div>
 
-<div class="social" onclick="window.open('https://github.com/Leg8cy')">
+<div class="btn" onclick="window.open('https://github.com/Leg8cy')">
 <img src="https://files.catbox.moe/q7kj6j.png">
 </div>
 
-<div class="social" onclick="copyLitecoin()">
+<div class="btn" onclick="navigator.clipboard.writeText('Leg8cy')">
 <img src="https://files.catbox.moe/4jhg7h.png">
 </div>
 
 </div>
+
 </div>
 
 <script>
-function copyLitecoin(){
-navigator.clipboard.writeText("Leg8cy")
-alert("Copied Litecoin tag: Leg8cy")
-}
-
 const canvas=document.getElementById("snow")
 const ctx=canvas.getContext("2d")
 
 canvas.width=window.innerWidth
 canvas.height=window.innerHeight
 
-let snowflakes=[]
+let snow=[]
 
-for(let i=0;i<150;i++){
-snowflakes.push({
+for(let i=0;i<160;i++){
+snow.push({
 x:Math.random()*canvas.width,
 y:Math.random()*canvas.height,
-r:Math.random()*3+1,
-d:Math.random()*1
+r:Math.random()*2+1,
+speedY:Math.random()*0.8+0.3,
+speedX:Math.random()*0.6+0.2
 })
 }
 
-function drawSnow(){
+function draw(){
 ctx.clearRect(0,0,canvas.width,canvas.height)
-
 ctx.fillStyle="white"
 ctx.beginPath()
 
-for(let i=0;i<snowflakes.length;i++){
-let f=snowflakes[i]
-ctx.moveTo(f.x,f.y)
-ctx.arc(f.x,f.y,f.r,0,Math.PI*2,true)
+for(let s of snow){
+ctx.moveTo(s.x,s.y)
+ctx.arc(s.x,s.y,s.r,0,Math.PI*2)
 }
 
 ctx.fill()
-moveSnow()
-}
 
-function moveSnow(){
-for(let i=0;i<snowflakes.length;i++){
-let f=snowflakes[i]
-f.y+=f.d+0.5
-f.x+=Math.sin(f.y*0.01)
+for(let s of snow){
+s.y+=s.speedY
+s.x-=s.speedX
 
-if(f.y>canvas.height){
-f.y=0
-f.x=Math.random()*canvas.width
-}
+if(s.y>canvas.height||s.x<0){
+s.y=-5
+s.x=Math.random()*canvas.width
 }
 }
 
-setInterval(drawSnow,25)
+requestAnimationFrame(draw)
+}
+
+draw()
+
+window.addEventListener("resize",()=>{
+canvas.width=window.innerWidth
+canvas.height=window.innerHeight
+})
 </script>
 
 </body>
