@@ -6,48 +6,96 @@
 <title>Atlas | #1 Roblox Script</title>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-/* CORE POSITIONING FIXES [cite: 76, 77] */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--blue:#1e90ff;--blue-bright:#4dabff;--blue-dim:#0a4f99;--bg:#030d1a;--panel-border:#162b44;--text:#c8dff0;--text-dim:#4a7fa5;--text-mid:#7aaccc}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'Exo 2',sans-serif;min-height:100vh;overflow-x:hidden;user-select:none;-webkit-user-select:none}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(30,144,255,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(30,144,255,0.035) 1px,transparent 1px);background-size:64px 64px;pointer-events:none;z-index:0}
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 64px;background:rgba(3,13,26,0.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(30,144,255,0.1)}
-
-/* Corrected Hero Alignment [cite: 76] */
-.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 64px;gap:80px}
-.hero-left{flex:1;max-width:580px;display:flex;flex-direction:column;justify-content:center}
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 64px;gap:80px;position:relative;z-index:1}
+.hero-left{flex:1;max-width:580px}
 .hero-right{flex:1;display:flex;justify-content:center;align-items:center}
-.ui-wrapper{position:relative;width:100%;max-width:470px}
-
-/* Grid Positioning [cite: 77] */
-.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:18px;max-width:1100px;margin:0 auto}
-.games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;max-width:1200px;margin:0 auto}
-
-/* Security Overlays */
-.atlas-ui{background:rgba(8,16,28,0.97);border:1px solid rgba(30,144,255,0.35);border-radius:7px;overflow:hidden;transition:transform 0.4s cubic-bezier(0.4,0,0.2,1)}
+.ui-wrapper{position:relative;width:100%;max-width:470px;perspective:1000px}
+.atlas-ui{background:rgba(8,16,28,0.97);border:1px solid rgba(30,144,255,0.35);border-radius:7px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,0.5),0 0 20px rgba(30,144,255,0.1)}
+.ui-nav{height:34px;background:#0c1a2b;border-bottom:1px solid var(--panel-border);display:flex;align-items:center;padding:0 12px;justify-content:space-between}
+.ui-main{display:flex;height:310px}
+.ui-sidebar{width:130px;border-right:1px solid var(--panel-border);padding:10px 0}
+.sidebar-item{padding:6px 16px;font-size:12px;color:var(--text-dim);display:flex;align-items:center;gap:8px;cursor:default}
+.sidebar-item.active{color:var(--blue-bright);background:rgba(30,144,255,0.06);border-left:2px solid var(--blue)}
+.ui-content{flex:1;padding:14px;display:flex;flex-direction:column;gap:10px}
+.ui-row{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-dim)}
+.ui-slider-bg{height:4px;background:#122338;border-radius:2px;margin-top:4px;position:relative;overflow:hidden}
+.ui-slider-fill{position:absolute;top:0;left:0;height:100%;background:var(--blue);width:30%;transition:width 0.3s ease}
+.ui-cb{width:14px;height:14px;background:#122338;border:1px solid var(--panel-border);border-radius:3px;position:relative}
+.ui-cb.on::after{content:'';position:absolute;inset:2px;background:var(--blue);border-radius:1px}
 </style>
 </head>
 <body>
+<nav>
+  <div style="font-weight:800;font-size:24px;letter-spacing:-0.5px">ATLAS<span style="color:var(--blue)">.</span></div>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <h1 style="font-size:64px;line-height:1;margin-bottom:20px">The Future of <span style="color:var(--blue)">Roblox</span> Scripting.</h1>
+    <p style="color:var(--text-dim);font-size:18px;margin-bottom:32px">Experience unparalleled performance and security with the industry-leading executor interface.</p>
+  </div>
+  <div class="hero-right">
+    <div class="ui-wrapper" id="uiW">
+      <div class="atlas-ui">
+        <div class="ui-nav"><span style="font-size:11px;font-weight:700;color:var(--text-mid)">ATLAS V3</span></div>
+        <div class="ui-main">
+          <div class="ui-sidebar">
+            <div class="sidebar-item active">Main</div>
+            <div class="sidebar-item">Combat</div>
+            <div class="sidebar-item">Visuals</div>
+            <div class="sidebar-item">Misc</div>
+          </div>
+          <div class="ui-content">
+            <div class="ui-row"><span id="l1">Walkspeed</span><div class="ui-slider-bg"><div class="ui-slider-fill" id="s1" style="width:45%"></div></div></div>
+            <div class="ui-row"><span id="l2">JumpPower</span><div class="ui-slider-bg"><div class="ui-slider-fill" id="s2" style="width:30%"></div></div></div>
+            <div class="ui-row"><span>Auto Farm</span><div class="ui-cb on" id="c1"></div></div>
+            <div class="ui-row"><span id="l6">Kill Aura</span><div class="ui-cb" id="c6"></div></div>
+            <div class="ui-row"><span id="l7">Infinite Ammo</span><div class="ui-cb" id="c7"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <script>
-/**
- * OBFUSCATED SECURITY LAYER
- * Blocks: F12, Right Click, Ctrl+U, Ctrl+Shift+I/J/C
- */
+/* RECONSTRUCTED INTERACTIVE LOGIC */
+const sliders=[{el:document.getElementById('s1'),base:45,max:85},{el:document.getElementById('s2'),base:30,max:70}];
+const cbs=[
+  {cb:document.getElementById('c6'),hov:true,isBlue:false},
+  {cb:document.getElementById('c7'),hov:false,isBlue:false}
+];
+let hovering=false;
+document.getElementById('uiW').addEventListener('mouseenter',()=>{
+  hovering=true;
+  sliders.forEach(s=>{s.el.style.width=s.max+'%'});
+  cbs.forEach((c,i)=>{setTimeout(()=>{if(hovering&&c.hov)c.cb.classList.add('on')},i*55)});
+});
+document.getElementById('uiW').addEventListener('mouseleave',()=>{
+  hovering=false;
+  sliders.forEach(s=>{s.el.style.width=s.base+'%'});
+  cbs.forEach(c=>{if(!c.isBlue)c.cb.classList.remove('on')});
+});
+
+/* OBFUSCATED SECURITY LAYER */
 (function(_0x1b2c){const _0x4d5e=function(_0x2a1b){while(--_0x2a1b){_0x1b2c['push'](_0x1b2c['shift']());}};_0x4d5e(0x1a7);}(['\x63\x6f\x6e\x74\x65\x78\x74\x6d\x65\x6e\x75','\x70\x72\x65\x76\x65\x6e\x74\x44\x65\x66\x61\x75\x6c\x74','\x6b\x65\x79\x64\x6f\x77\x6e','\x64\x65\x62\x75\x67\x67\x65\x72']));
 const _0x2f1a=function(_0x1b2c,_0x4d5e){_0x1b2c=_0x1b2c-0x0;let _0x2a1b=['\x63\x6f\x6e\x74\x65\x78\x74\x6d\x65\x6e\x75','\x70\x72\x65\x76\x65\x6e\x74\x44\x65\x66\x61\x75\x6c\x74','\x6b\x65\x79\x64\x6f\x77\x6e','\x64\x65\x62\x75\x67\x67\x65\x72'][_0x1b2c];return _0x2a1b;};
-
-document.addEventListener(_0x2f1a('0x0'),_0x15a2=>_0x15a2[_0x2f1a('0x1')]());
-document.onkeydown=function(_0x5c2e){
-    if(_0x5c2e.keyCode==0x7B)return false; // F12
-    if(_0x5c2e.ctrlKey&&_0x5c2e.shiftKey&&(_0x5c2e.keyCode==0x49||_0x5c2e.keyCode==0x4A||_0x5c2e.keyCode==0x43))return false;
-    if(_0x5c2e.ctrlKey&&_0x5c2e.keyCode==0x55)return false; // Ctrl+U
+document.addEventListener(_0x2f1a('0x0'),e=>e[_0x2f1a('0x1')]());
+document.onkeydown=function(e){
+  if(e.keyCode==123||(e.ctrlKey&&e.shiftKey&&(e.keyCode==73||e.keyCode==74||e.keyCode==67))||(e.ctrlKey&&e.keyCode==85))return false;
 };
-setInterval(function(){eval(_0x2f1a('0x3'));},0x64);
+setInterval(()=>{eval(_0x2f1a('0x3'))},100);
 
-/* WEBHOOK PROTECTION: HEX-ENCODED ENDPOINT [cite: 79] */
-const _v1=()=> {
-    const _0x992= ['\x68\x74\x74\x70\x73\x3a\x2f\x2f\x64\x69\x73\x63\x6f\x72\x64\x2e\x63\x6f\x6d\x2f\x61\x70\x69\x2f\x77\x65\x62\x68\x6f\x6f\x6b\x73\x2f'];
-    // Logic for your webhooks goes here, obfuscated via IIFE
+/* WEBHOOK PROTECTION AREA */
+const _0xWH=()=>{
+  const _url='\x68\x74\x74\x70\x73\x3a\x2f\x2f\x64\x69\x73\x63\x6f\x72\x64\x2e\x63\x6f\x6d\x2f\x61\x70\x69\x2f\x77\x65\x62\x68\x6f\x6f\x6b\x73\x2f';
+  // Additional logic here
 };
 </script>
 </body>
