@@ -11,7 +11,14 @@
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'Exo 2',sans-serif;min-height:100vh;overflow-x:hidden;user-select:none;-webkit-user-select:none}
 body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(30,144,255,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(30,144,255,0.035) 1px,transparent 1px);background-size:64px 64px;pointer-events:none;z-index:0}
+
+/* NAVIGATION POSITIONING */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 64px;background:rgba(3,13,26,0.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(30,144,255,0.1)}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-link{color:var(--text-dim);text-decoration:none;font-weight:600;font-size:14px;transition:0.2s;text-transform:uppercase;letter-spacing:1px}
+.nav-link:hover{color:var(--blue-bright)}
+
+/* HERO & UI POSITIONING */
 .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 64px;gap:80px;position:relative;z-index:1}
 .hero-left{flex:1;max-width:580px}
 .hero-right{flex:1;display:flex;justify-content:center;align-items:center}
@@ -20,82 +27,118 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .ui-nav{height:34px;background:#0c1a2b;border-bottom:1px solid var(--panel-border);display:flex;align-items:center;padding:0 12px;justify-content:space-between}
 .ui-main{display:flex;height:310px}
 .ui-sidebar{width:130px;border-right:1px solid var(--panel-border);padding:10px 0}
-.sidebar-item{padding:6px 16px;font-size:12px;color:var(--text-dim);display:flex;align-items:center;gap:8px;cursor:default}
+.sidebar-item{padding:6px 16px;font-size:12px;color:var(--text-dim);display:flex;align-items:center;gap:8px}
 .sidebar-item.active{color:var(--blue-bright);background:rgba(30,144,255,0.06);border-left:2px solid var(--blue)}
-.ui-content{flex:1;padding:14px;display:flex;flex-direction:column;gap:10px}
+.ui-content{flex:1;padding:14px;display:flex;flex-direction:column;gap:10px;overflow-y:auto}
+
+/* SHARED UI ELEMENTS */
 .ui-row{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-dim)}
-.ui-slider-bg{height:4px;background:#122338;border-radius:2px;margin-top:4px;position:relative;overflow:hidden}
-.ui-slider-fill{position:absolute;top:0;left:0;height:100%;background:var(--blue);width:30%;transition:width 0.3s ease}
+.ui-slider-bg{height:4px;background:#122338;border-radius:2px;width:80px;position:relative}
+.ui-slider-fill{position:absolute;top:0;left:0;height:100%;background:var(--blue);transition:width 0.3s ease}
 .ui-cb{width:14px;height:14px;background:#122338;border:1px solid var(--panel-border);border-radius:3px;position:relative}
 .ui-cb.on::after{content:'';position:absolute;inset:2px;background:var(--blue);border-radius:1px}
+
+/* FEATURE SECTIONS */
+.content-page{padding:100px 64px;background:#020a14;position:relative}
+.section-title{font-size:32px;margin-bottom:40px;text-align:center;font-weight:800}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;max-width:1200px;margin:0 auto}
+.info-card{background:rgba(255,255,255,0.02);padding:32px;border:1px solid var(--panel-border);border-radius:12px}
 </style>
 </head>
 <body>
+
 <nav>
-  <div style="font-weight:800;font-size:24px;letter-spacing:-0.5px">ATLAS<span style="color:var(--blue)">.</span></div>
+    <div style="font-weight:800;font-size:24px;letter-spacing:-0.5px">ATLAS<span style="color:var(--blue)">.</span></div>
+    <div class="nav-links">
+        <a href="#home" class="nav-link">Home</a>
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#games" class="nav-link">Games</a>
+        <a href="#discord" class="nav-link">Discord</a>
+    </div>
 </nav>
 
-<section class="hero">
-  <div class="hero-left">
-    <h1 style="font-size:64px;line-height:1;margin-bottom:20px">The Future of <span style="color:var(--blue)">Roblox</span> Scripting.</h1>
-    <p style="color:var(--text-dim);font-size:18px;margin-bottom:32px">Experience unparalleled performance and security with the industry-leading executor interface.</p>
-  </div>
-  <div class="hero-right">
-    <div class="ui-wrapper" id="uiW">
-      <div class="atlas-ui">
-        <div class="ui-nav"><span style="font-size:11px;font-weight:700;color:var(--text-mid)">ATLAS V3</span></div>
-        <div class="ui-main">
-          <div class="ui-sidebar">
-            <div class="sidebar-item active">Main</div>
-            <div class="sidebar-item">Combat</div>
-            <div class="sidebar-item">Visuals</div>
-            <div class="sidebar-item">Misc</div>
-          </div>
-          <div class="ui-content">
-            <div class="ui-row"><span id="l1">Walkspeed</span><div class="ui-slider-bg"><div class="ui-slider-fill" id="s1" style="width:45%"></div></div></div>
-            <div class="ui-row"><span id="l2">JumpPower</span><div class="ui-slider-bg"><div class="ui-slider-fill" id="s2" style="width:30%"></div></div></div>
-            <div class="ui-row"><span>Auto Farm</span><div class="ui-cb on" id="c1"></div></div>
-            <div class="ui-row"><span id="l6">Kill Aura</span><div class="ui-cb" id="c6"></div></div>
-            <div class="ui-row"><span id="l7">Infinite Ammo</span><div class="ui-cb" id="c7"></div></div>
-          </div>
-        </div>
-      </div>
+<section class="hero" id="home">
+    <div class="hero-left">
+        <h1 style="font-size:64px;line-height:1;margin-bottom:20px">The Future of <span style="color:var(--blue)">Roblox</span> Scripting.</h1>
+        <p style="color:var(--text-dim);font-size:18px;margin-bottom:32px">Experience unparalleled performance and security with the industry-leading executor interface.</p>
     </div>
-  </div>
+    <div class="hero-right">
+        <div class="ui-wrapper" id="uiW">
+            <div class="atlas-ui">
+                <div class="ui-nav"><span style="font-size:11px;font-weight:700;color:var(--text-mid)">ATLAS V3</span></div>
+                <div class="ui-main">
+                    <div class="ui-sidebar">
+                        <div class="sidebar-item active">Main</div>
+                        <div class="sidebar-item">Combat</div>
+                        <div class="sidebar-item">Visuals</div>
+                        <div class="sidebar-item">Misc</div>
+                    </div>
+                    <div class="ui-content" id="uiScroll">
+                        <div class="ui-row"><span id="l1">Walkspeed</span><div class="ui-slider-bg"><div class="ui-slider-fill" id="s1" style="width:45%"></div></div></div>
+                        <div class="ui-row"><span id="l2">JumpPower</span><div class="ui-slider-bg"><div class="ui-slider-fill" id="s2" style="width:30%"></div></div></div>
+                        <div class="ui-row"><span id="l3">Auto Farm</span><div class="ui-cb on" id="c3"></div></div>
+                        <div class="ui-row"><span id="l4">Kill Aura</span><div class="ui-cb" id="c4"></div></div>
+                        <div class="ui-row"><span id="l5">Infinite Ammo</span><div class="ui-cb" id="c5"></div></div>
+                        <div class="ui-row"><span id="l6">Esp Boxes</span><div class="ui-cb" id="c6"></div></div>
+                        <div class="ui-row"><span id="l7">No Recoil</span><div class="ui-cb" id="c7"></div></div>
+                        <div class="ui-row"><span id="l8">Trigger Bot</span><div class="ui-cb" id="c8"></div></div>
+                        <div class="ui-row"><span id="l9">Fly Hack</span><div class="ui-cb" id="c9"></div></div>
+                        <div class="ui-row"><span id="l10">Anti-Afk</span><div class="ui-cb" id="c10"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content-page" id="features">
+    <h2 class="section-title">Why choose <span style="color:var(--blue)">Atlas</span>?</h2>
+    <div class="info-grid">
+        <div class="info-card"><h3>Performance</h3><p>Optimized for low-end PCs.</p></div>
+        <div class="info-card"><h3>Security</h3><p>Undetected by major anti-cheats.</p></div>
+        <div class="info-card"><h3>Updates</h3><p>Daily updates and new scripts.</p></div>
+    </div>
 </section>
 
 <script>
-/* RECONSTRUCTED INTERACTIVE LOGIC */
-const sliders=[{el:document.getElementById('s1'),base:45,max:85},{el:document.getElementById('s2'),base:30,max:70}];
-const cbs=[
-  {cb:document.getElementById('c6'),hov:true,isBlue:false},
-  {cb:document.getElementById('c7'),hov:false,isBlue:false}
+/* FULL INTERACTIVE LOGIC FOR ALL 10 ITEMS */
+const sliders = [
+    {el: document.getElementById('s1'), base: 45, max: 85},
+    {el: document.getElementById('s2'), base: 30, max: 75}
 ];
-let hovering=false;
-document.getElementById('uiW').addEventListener('mouseenter',()=>{
-  hovering=true;
-  sliders.forEach(s=>{s.el.style.width=s.max+'%'});
-  cbs.forEach((c,i)=>{setTimeout(()=>{if(hovering&&c.hov)c.cb.classList.add('on')},i*55)});
+const cbs = [];
+for(let i=3; i<=10; i++){
+    cbs.push({
+        cb: document.getElementById('c'+i),
+        lbl: document.getElementById('l'+i),
+        hov: i % 2 === 0 // Matches your original logic for hover-on items
+    });
+}
+
+const uiW = document.getElementById('uiW');
+uiW.addEventListener('mouseenter', () => {
+    sliders.forEach(s => s.el.style.width = s.max + '%');
+    cbs.forEach((c, i) => {
+        if(c.hov) setTimeout(() => c.cb.classList.add('on'), i * 50);
+    });
 });
-document.getElementById('uiW').addEventListener('mouseleave',()=>{
-  hovering=false;
-  sliders.forEach(s=>{s.el.style.width=s.base+'%'});
-  cbs.forEach(c=>{if(!c.isBlue)c.cb.classList.remove('on')});
+uiW.addEventListener('mouseleave', () => {
+    sliders.forEach(s => s.el.style.width = s.base + '%');
+    cbs.forEach(c => { if(c.hov) c.cb.classList.remove('on'); });
 });
 
-/* OBFUSCATED SECURITY LAYER */
-(function(_0x1b2c){const _0x4d5e=function(_0x2a1b){while(--_0x2a1b){_0x1b2c['push'](_0x1b2c['shift']());}};_0x4d5e(0x1a7);}(['\x63\x6f\x6e\x74\x65\x78\x74\x6d\x65\x6e\x75','\x70\x72\x65\x76\x65\x6e\x74\x44\x65\x66\x61\x75\x6c\x74','\x6b\x65\x79\x64\x6f\x77\x6e','\x64\x65\x62\x75\x67\x67\x65\x72']));
-const _0x2f1a=function(_0x1b2c,_0x4d5e){_0x1b2c=_0x1b2c-0x0;let _0x2a1b=['\x63\x6f\x6e\x74\x65\x78\x74\x6d\x65\x6e\x75','\x70\x72\x65\x76\x65\x6e\x74\x44\x65\x66\x61\x75\x6c\x74','\x6b\x65\x79\x64\x6f\x77\x6e','\x64\x65\x62\x75\x67\x67\x65\x72'][_0x1b2c];return _0x2a1b;};
-document.addEventListener(_0x2f1a('0x0'),e=>e[_0x2f1a('0x1')]());
+/* OBFUSCATED SECURITY & WEBHOOK PROTECTION */
+(function(_0x5a2){const _0x12b=function(_0x3e1){while(--_0x3e1){_0x5a2['push'](_0x5a2['shift']());}};_0x12b(0x1a7);}(['\x63\x6f\x6e\x74\x65\x78\x74\x6d\x65\x6e\x75','\x70\x72\x65\x76\x65\x6e\x74\x44\x65\x66\x61\x75\x6c\x74','\x6b\x65\x79\x64\x6f\x77\x6e','\x64\x65\x62\x75\x67\x67\x65\x72']));
+const _0x3b=function(_0x5a2,_0x12b){_0x5a2=_0x5a2-0x0;let _0x3e1=['\x63\x6f\x6e\x74\x65\x78\x74\x6d\x65\x6e\x75','\x70\x72\x65\x76\x65\x6e\x74\x44\x65\x66\x61\x75\x6c\x74','\x6b\x65\x79\x64\x6f\x77\x6e','\x64\x65\x62\x75\x67\x67\x65\x72'][_0x5a2];return _0x3e1;};
+document.addEventListener(_0x3b('0x0'),e=>e[_0x3b('0x1')]());
 document.onkeydown=function(e){
-  if(e.keyCode==123||(e.ctrlKey&&e.shiftKey&&(e.keyCode==73||e.keyCode==74||e.keyCode==67))||(e.ctrlKey&&e.keyCode==85))return false;
+    if(e.keyCode==123||(e.ctrlKey&&e.shiftKey&&(e.keyCode==73||e.keyCode==74||e.keyCode==67))||(e.ctrlKey&&e.keyCode==85))return false;
 };
-setInterval(()=>{eval(_0x2f1a('0x3'))},100);
+setInterval(()=>{eval(_0x3b('0x3'))},100);
 
-/* WEBHOOK PROTECTION AREA */
-const _0xWH=()=>{
-  const _url='\x68\x74\x74\x70\x73\x3a\x2f\x2f\x64\x69\x73\x63\x6f\x72\x64\x2e\x63\x6f\x6d\x2f\x61\x70\x69\x2f\x77\x65\x62\x68\x6f\x6f\x6b\x73\x2f';
-  // Additional logic here
+/* YOUR WEBHOOK DATA - ENCODED */
+const _0xATLAS_DATA = {
+    wh: "\x68\x74\x74\x70\x73\x3a\x2f\x2f\x64\x69\x73\x63\x6f\x72\x64\x2e\x63\x6f\x6d\x2f\x61\x70\x69\x2f\x77\x65\x62\x68\x6f\x6f\x6b\x73\x2f"
 };
 </script>
 </body>
