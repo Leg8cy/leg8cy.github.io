@@ -1,96 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Exec → Game</title>
-<style>
-  body { margin:0; font-family:Consolas,monospace; background:#0d0d0d; color:#0f0; height:100vh; display:flex; flex-direction:column; }
-  #input { flex:1; background:#111; color:#0f5; border:none; padding:12px; font-size:15px; resize:none; outline:none; }
-  #controls { padding:10px; background:#000; display:flex; gap:10px; }
-  button { padding:8px 16px; background:#222; color:#0f0; border:1px solid #0f0; cursor:pointer; }
-  button:hover { background:#0a0; color:#000; }
-  #status { color:#f80; font-size:13px; }
-</style>
-</head>
-<body>
-
-<textarea id="input" spellcheck="false" placeholder="Paste or write Lua/JS code here..."></textarea>
-
-<div id="controls">
-  <button onclick="execute()">Execute</button>
-  <button onclick="clearInput()">Clear</button>
-  <button onclick="copyToClipboard()">Copy</button>
-  <span id="status"></span>
-</div>
-
-<script>
-const textarea = document.getElementById('input');
-const status = document.getElementById('status');
-
 function execute() {
   const code = textarea.value.trim();
-  if (!code) return;
+  if (!code) {
+    status.textContent = "Nothing to send";
+    return;
+  }
 
   status.textContent = "Sending...";
+  status.style.color = "#f80";
 
-  try {
-    if (typeof window.gameExec === 'function') {
-      window.gameExec(code);
-      status.textContent = "Sent via gameExec() ✓";
-    }
-    else if (window.exec) {
-      window.exec(code);
-      status.textContent = "Sent via exec() ✓";
-    }
-    else if (window.loadstring) {
-      const fn = window.loadstring(code);
-      if (typeof fn === 'function') {
-        fn();
-        status.textContent = "loadstring() → executed ✓";
-      } else {
-        status.textContent = "loadstring returned non-function";
-      }
-    }
-    else if (window.eval && window.eval !== Eval) {
-      window.eval(code);
-      status.textContent = "Executed via unsafe eval ✓";
-    }
-    else {
-      status.textContent = "No executor found (gameExec/exec/loadstring/eval)";
+  let fn = window.gameExec || window.exec;
+
+  if (typeof fn === 'function') {
+    try {
+      const result = fn(code);
+      status.textContent = "Sent! " + (result ? "→ " + String(result).slice(0, 60) : "");
+      status.style.color = "#0f0";
+    } catch(e) {
+      status.textContent = "Bridge call failed: " + e.message;
       status.style.color = "#f44";
     }
-  } catch(e) {
-    status.textContent = "Error: " + e.message;
+  } else {
+    status.textContent = "No bridge detected (window.gameExec / exec missing) — HTML not in Roblox CEF?";
     status.style.color = "#f44";
   }
 
-  setTimeout(() => { status.style.color = "#f80"; }, 2200);
+  setTimeout(() => {
+    if (status.textContent.includes("Sending")) status.textContent = "";
+  }, 4000);
 }
-
-function clearInput() {
-  textarea.value = "";
-  textarea.focus();
-}
-
-function copyToClipboard() {
-  navigator.clipboard.writeText(textarea.value)
-    .then(() => {
-      status.textContent = "Copied ✓";
-      setTimeout(() => status.textContent = "", 1200);
-    })
-    .catch(() => {
-      status.textContent = "Copy failed";
-    });
-}
-
-textarea.addEventListener('keydown', e => {
-  if (e.ctrlKey && e.key === 'Enter') {
-    e.preventDefault();
-    execute();
-  }
-});
-
-textarea.focus();
-</script>
-</body>
-</html>
