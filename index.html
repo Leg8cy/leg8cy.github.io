@@ -1,138 +1,96 @@
-```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Game Script Console</title>
-
+<title>Exec → Game</title>
 <style>
-body{
-background:#2e2e2e;
-margin:0;
-font-family:monospace;
-color:#fff;
-}
-
-#container{
-width:800px;
-margin:60px auto;
-background:#3a3a3a;
-border-radius:6px;
-box-shadow:0 0 10px rgba(0,0,0,.6);
-}
-
-#topbar{
-padding:10px;
-background:#444;
-border-bottom:1px solid #555;
-font-size:14px;
-}
-
-#editorWrap{
-display:flex;
-height:350px;
-}
-
-#lines{
-background:#2a2a2a;
-padding:10px;
-text-align:right;
-color:#888;
-user-select:none;
-}
-
-#editor{
-flex:1;
-background:#2e2e2e;
-border:none;
-outline:none;
-resize:none;
-color:#fff;
-padding:10px;
-font-size:14px;
-line-height:20px;
-}
-
-#buttons{
-padding:10px;
-background:#444;
-border-top:1px solid #555;
-}
-
-button{
-background:#5a5a5a;
-border:none;
-color:white;
-padding:8px 16px;
-cursor:pointer;
-margin-right:6px;
-}
-
-button:hover{
-background:#6a6a6a;
-}
+  body { margin:0; font-family:Consolas,monospace; background:#0d0d0d; color:#0f0; height:100vh; display:flex; flex-direction:column; }
+  #input { flex:1; background:#111; color:#0f5; border:none; padding:12px; font-size:15px; resize:none; outline:none; }
+  #controls { padding:10px; background:#000; display:flex; gap:10px; }
+  button { padding:8px 16px; background:#222; color:#0f0; border:1px solid #0f0; cursor:pointer; }
+  button:hover { background:#0a0; color:#000; }
+  #status { color:#f80; font-size:13px; }
 </style>
 </head>
-
 <body>
 
-<div id="container">
+<textarea id="input" spellcheck="false" placeholder="Paste or write Lua/JS code here..."></textarea>
 
-<div id="topbar">
-Web Script Console
-</div>
-
-<div id="editorWrap">
-<div id="lines">1</div>
-<textarea id="editor" spellcheck="false"></textarea>
-</div>
-
-<div id="buttons">
-<button onclick="run()">Run</button>
-<button onclick="clearEditor()">Clear</button>
-</div>
-
+<div id="controls">
+  <button onclick="execute()">Execute</button>
+  <button onclick="clearInput()">Clear</button>
+  <button onclick="copyToClipboard()">Copy</button>
+  <span id="status"></span>
 </div>
 
 <script>
-const editor = document.getElementById("editor")
-const lines = document.getElementById("lines")
+const textarea = document.getElementById('input');
+const status = document.getElementById('status');
 
-function updateLines(){
-const count = editor.value.split("\n").length
-let nums = ""
-for(let i=1;i<=count;i++) nums += i + "<br>"
-lines.innerHTML = nums
+function execute() {
+  const code = textarea.value.trim();
+  if (!code) return;
+
+  status.textContent = "Sending...";
+
+  try {
+    if (typeof window.gameExec === 'function') {
+      window.gameExec(code);
+      status.textContent = "Sent via gameExec() ✓";
+    }
+    else if (window.exec) {
+      window.exec(code);
+      status.textContent = "Sent via exec() ✓";
+    }
+    else if (window.loadstring) {
+      const fn = window.loadstring(code);
+      if (typeof fn === 'function') {
+        fn();
+        status.textContent = "loadstring() → executed ✓";
+      } else {
+        status.textContent = "loadstring returned non-function";
+      }
+    }
+    else if (window.eval && window.eval !== Eval) {
+      window.eval(code);
+      status.textContent = "Executed via unsafe eval ✓";
+    }
+    else {
+      status.textContent = "No executor found (gameExec/exec/loadstring/eval)";
+      status.style.color = "#f44";
+    }
+  } catch(e) {
+    status.textContent = "Error: " + e.message;
+    status.style.color = "#f44";
+  }
+
+  setTimeout(() => { status.style.color = "#f80"; }, 2200);
 }
 
-editor.addEventListener("input",updateLines)
-
-editor.addEventListener("keydown",function(e){
-if(e.key === "Tab"){
-e.preventDefault()
-const start = this.selectionStart
-const end = this.selectionEnd
-this.value = this.value.substring(0,start) + "    " + this.value.substring(end)
-this.selectionStart = this.selectionEnd = start + 4
-}
-})
-
-function run(){
-fetch("/run",{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({script:editor.value})
-})
+function clearInput() {
+  textarea.value = "";
+  textarea.focus();
 }
 
-function clearEditor(){
-editor.value=""
-updateLines()
+function copyToClipboard() {
+  navigator.clipboard.writeText(textarea.value)
+    .then(() => {
+      status.textContent = "Copied ✓";
+      setTimeout(() => status.textContent = "", 1200);
+    })
+    .catch(() => {
+      status.textContent = "Copy failed";
+    });
 }
 
-updateLines()
+textarea.addEventListener('keydown', e => {
+  if (e.ctrlKey && e.key === 'Enter') {
+    e.preventDefault();
+    execute();
+  }
+});
+
+textarea.focus();
 </script>
-
 </body>
 </html>
-```
