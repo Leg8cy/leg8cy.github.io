@@ -1,35 +1,138 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
-<title>Client UI</title>
+<meta charset="UTF-8">
+<title>Game Script Console</title>
+
 <style>
 body{
+background:#2e2e2e;
 margin:0;
-padding:0;
-background:#0f0f0f;
-font-family:Arial,Helvetica,sans-serif;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-color:white
+font-family:monospace;
+color:#fff;
 }
 
-#ui{
-background:#1a1a1a;
-padding:30px 60px;
-border-radius:12px;
-font-size:28px;
-box-shadow:0 0 20px rgba(0,0,0,0.6)
+#container{
+width:800px;
+margin:60px auto;
+background:#3a3a3a;
+border-radius:6px;
+box-shadow:0 0 10px rgba(0,0,0,.6);
+}
+
+#topbar{
+padding:10px;
+background:#444;
+border-bottom:1px solid #555;
+font-size:14px;
+}
+
+#editorWrap{
+display:flex;
+height:350px;
+}
+
+#lines{
+background:#2a2a2a;
+padding:10px;
+text-align:right;
+color:#888;
+user-select:none;
+}
+
+#editor{
+flex:1;
+background:#2e2e2e;
+border:none;
+outline:none;
+resize:none;
+color:#fff;
+padding:10px;
+font-size:14px;
+line-height:20px;
+}
+
+#buttons{
+padding:10px;
+background:#444;
+border-top:1px solid #555;
+}
+
+button{
+background:#5a5a5a;
+border:none;
+color:white;
+padding:8px 16px;
+cursor:pointer;
+margin-right:6px;
+}
+
+button:hover{
+background:#6a6a6a;
 }
 </style>
 </head>
 
 <body>
 
-<div id="ui">
-hi
+<div id="container">
+
+<div id="topbar">
+Web Script Console
 </div>
+
+<div id="editorWrap">
+<div id="lines">1</div>
+<textarea id="editor" spellcheck="false"></textarea>
+</div>
+
+<div id="buttons">
+<button onclick="run()">Run</button>
+<button onclick="clearEditor()">Clear</button>
+</div>
+
+</div>
+
+<script>
+const editor = document.getElementById("editor")
+const lines = document.getElementById("lines")
+
+function updateLines(){
+const count = editor.value.split("\n").length
+let nums = ""
+for(let i=1;i<=count;i++) nums += i + "<br>"
+lines.innerHTML = nums
+}
+
+editor.addEventListener("input",updateLines)
+
+editor.addEventListener("keydown",function(e){
+if(e.key === "Tab"){
+e.preventDefault()
+const start = this.selectionStart
+const end = this.selectionEnd
+this.value = this.value.substring(0,start) + "    " + this.value.substring(end)
+this.selectionStart = this.selectionEnd = start + 4
+}
+})
+
+function run(){
+fetch("/run",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({script:editor.value})
+})
+}
+
+function clearEditor(){
+editor.value=""
+updateLines()
+}
+
+updateLines()
+</script>
 
 </body>
 </html>
+```
